@@ -14,13 +14,13 @@ export function ListingGrid({ listings, isLoading = false }: ListingGridProps) {
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-x-6 gap-y-10">
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-x-3 sm:gap-x-6 gap-y-6 sm:gap-y-10">
         {Array.from({ length: 8 }).map((_, i) => (
-          <div key={i} className="animate-pulse flex flex-col space-y-3">
-            <div className="aspect-[20/19] bg-neutral-200 dark:bg-neutral-800 rounded-[16px]" />
-            <div className="h-4 bg-neutral-200 dark:bg-neutral-800 rounded w-3/4" />
+          <div key={i} className="animate-pulse flex flex-col space-y-2.5 sm:space-y-3">
+            <div className="aspect-[20/19] bg-neutral-200 dark:bg-neutral-800 rounded-2xl sm:rounded-[18px]" />
+            <div className="h-3.5 sm:h-4 bg-neutral-200 dark:bg-neutral-800 rounded w-3/4" />
             <div className="h-3 bg-neutral-200 dark:bg-neutral-800 rounded w-1/2" />
-            <div className="h-4 bg-neutral-200 dark:bg-neutral-800 rounded w-1/3" />
+            <div className="h-3.5 sm:h-4 bg-neutral-200 dark:bg-neutral-800 rounded w-1/3" />
           </div>
         ))}
       </div>
@@ -48,7 +48,7 @@ export function ListingGrid({ listings, isLoading = false }: ListingGridProps) {
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-x-6 gap-y-10">
+    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-x-3 sm:gap-x-6 gap-y-6 sm:gap-y-10">
       {listings.map((listing) => (
         <ListingCard key={listing.id} listing={listing} />
       ))}
