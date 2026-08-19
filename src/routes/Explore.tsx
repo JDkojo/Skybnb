@@ -25,8 +25,8 @@ export default function Explore() {
   return (
     <div className="min-h-screen pb-24">
       {/* Category Bar & Quick Filter Trigger */}
-      <div className="sticky top-20 z-30 bg-white/95 dark:bg-[#121212]/95 backdrop-blur-md px-4 sm:px-6 lg:px-8 pt-2 pb-1 border-b border-neutral-100 dark:border-neutral-800/80">
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+      <div className="sticky top-20 z-30 bg-white/95 dark:bg-[#070D18]/95 backdrop-blur-md px-3 sm:px-6 lg:px-8 pt-2 pb-1 border-b border-neutral-100 dark:border-[#1E3557]/80">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-3 sm:gap-4">
           <div className="flex-1 min-w-0">
             <CategoryFilterBar />
           </div>
@@ -35,12 +35,12 @@ export default function Explore() {
           <button
             id="filters-modal-btn"
             onClick={() => setSearchModalOpen(true, 'filters')}
-            className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl border border-neutral-200 dark:border-neutral-700/80 bg-white dark:bg-[#1E1E1E] text-xs font-bold text-neutral-800 dark:text-neutral-200 hover:border-[#0EA5E9] hover:text-[#0EA5E9] transition-all shadow-sm shrink-0"
+            className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl border border-neutral-200 dark:border-[#1E3557] bg-white dark:bg-[#0F1E33] text-xs font-bold text-neutral-800 dark:text-neutral-200 hover:border-[#C5A059] hover:text-[#C5A059] transition-all shadow-sm shrink-0"
           >
-            <SlidersHorizontal className="w-4 h-4" />
-            <span className="hidden sm:inline">Filters</span>
+            <SlidersHorizontal className="w-4 h-4 text-[#C5A059]" />
+            <span className="hidden sm:inline">Ghana Filters</span>
             {activeFiltersCount > 0 && (
-              <span className="w-5 h-5 rounded-full bg-[#0EA5E9] text-white text-[11px] font-bold flex items-center justify-center">
+              <span className="w-5 h-5 rounded-full bg-[#C5A059] text-[#0E1E38] text-[11px] font-bold flex items-center justify-center">
                 {activeFiltersCount}
               </span>
             )}
@@ -49,14 +49,14 @@ export default function Explore() {
       </div>
 
       {/* Main Content Feed */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+      <main className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-4 sm:pt-6">
         {/* Results Banner if filtered */}
         {activeFiltersCount > 0 && (
-          <div className="mb-6 flex items-center justify-between p-3 rounded-2xl bg-sky-50 dark:bg-sky-950/40 border border-sky-100 dark:border-sky-800/60 text-xs font-semibold text-neutral-700 dark:text-neutral-300">
+          <div className="mb-6 flex items-center justify-between p-3 rounded-2xl bg-[#C5A059]/10 border border-[#C5A059]/30 text-xs font-semibold text-neutral-700 dark:text-neutral-300">
             <div className="flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-[#0EA5E9]" />
+              <Sparkles className="w-4 h-4 text-[#C5A059]" />
               <span>
-                Found <strong>{listings.length}</strong> stays matching your search filters
+                Found <strong>{listings.length}</strong> Ghana stays matching your search filters
               </span>
             </div>
           </div>

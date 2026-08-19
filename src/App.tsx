@@ -40,7 +40,7 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <div className="min-h-screen bg-white dark:bg-[#121212] text-[#222222] dark:text-[#F5F5F5] transition-colors duration-200 flex flex-col selection:bg-[#0EA5E9]/20 selection:text-[#0EA5E9]">
+        <div className="min-h-screen bg-[#F8F9FA] dark:bg-[#070D18] text-neutral-900 dark:text-neutral-100 transition-colors duration-200 flex flex-col selection:bg-[#C5A059]/30 selection:text-[#0E1E38]">
           {/* Top Desktop Navigation */}
           <Navbar />
 

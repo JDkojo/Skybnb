@@ -15,6 +15,8 @@ import {
   X,
   CheckCircle2,
   Calendar,
+  Building2,
+  PhoneCall,
 } from 'lucide-react';
 import { useListing } from '../../hooks/useListing';
 import { WishlistButton } from '../../components/WishlistButton';
@@ -42,14 +44,14 @@ export default function ListingDetail() {
   if (isLoading) {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 animate-pulse space-y-6">
-        <div className="h-8 bg-neutral-200 dark:bg-neutral-800 rounded w-2/3" />
-        <div className="aspect-[16/9] md:aspect-[21/9] bg-neutral-200 dark:bg-neutral-800 rounded-3xl" />
+        <div className="h-8 bg-neutral-200 dark:bg-[#0F1E33] rounded w-2/3" />
+        <div className="aspect-[16/9] md:aspect-[21/9] bg-neutral-200 dark:bg-[#0F1E33] rounded-3xl" />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="md:col-span-2 space-y-4">
-            <div className="h-6 bg-neutral-200 dark:bg-neutral-800 rounded w-1/2" />
-            <div className="h-20 bg-neutral-200 dark:bg-neutral-800 rounded" />
+            <div className="h-6 bg-neutral-200 dark:bg-[#0F1E33] rounded w-1/2" />
+            <div className="h-20 bg-neutral-200 dark:bg-[#0F1E33] rounded" />
           </div>
-          <div className="h-64 bg-neutral-200 dark:bg-neutral-800 rounded-3xl" />
+          <div className="h-64 bg-neutral-200 dark:bg-[#0F1E33] rounded-3xl" />
         </div>
       </div>
     );
@@ -58,25 +60,25 @@ export default function ListingDetail() {
   if (!listing) {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center text-center p-6">
-        <h2 className="text-2xl font-bold text-neutral-900 dark:text-white">Listing not found</h2>
-        <p className="text-sm text-neutral-500 mt-2">The property you are looking for does not exist or has been removed.</p>
+        <h2 className="text-2xl font-bold text-neutral-900 dark:text-white">Ghana Property Not Found</h2>
+        <p className="text-sm text-neutral-500 mt-2">The requested property in Ghana is currently unavailable or has been archived.</p>
         <Link
           to="/"
-          className="mt-6 px-6 py-2.5 rounded-full bg-[#0EA5E9] text-white font-bold text-sm"
+          className="mt-6 px-6 py-2.5 rounded-full bg-[#C5A059] text-[#0E1E38] font-bold text-sm shadow-md"
         >
-          Back to Explore
+          Explore All Ghana Stays
         </Link>
       </div>
     );
   }
 
-  // Calculate pricing breakdown
+  // Calculate pricing breakdown in Ghana Cedis
   const start = new Date(checkInDate).getTime();
   const end = new Date(checkOutDate).getTime();
   const diffDays = Math.max(1, Math.ceil((end - start) / (1000 * 60 * 60 * 24)));
   const baseTotal = listing.price_per_night * diffDays;
-  const serviceFee = Math.round(baseTotal * 0.12);
-  const taxes = Math.round(baseTotal * 0.08);
+  const serviceFee = Math.round(baseTotal * 0.08);
+  const taxes = Math.round(baseTotal * 0.05);
   const grandTotal = baseTotal + listing.cleaning_fee + serviceFee + taxes;
 
   const handleReserve = () => {
@@ -95,42 +97,42 @@ export default function ListingDetail() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 pb-28">
+    <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6 pb-28">
       {/* Back button */}
-      <div className="mb-4">
+      <div className="mb-3 sm:mb-4">
         <Link
           to="/"
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs font-bold text-neutral-600 dark:text-neutral-400 hover:text-[#C5A059] dark:hover:text-[#E5C158] transition-colors"
         >
           <ChevronLeft className="w-4 h-4" />
-          <span>Back to all stays</span>
+          <span>Back to Ghana stays</span>
         </Link>
       </div>
 
       {/* Title Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4 sm:mb-6">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-neutral-900 dark:text-white tracking-tight">
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-neutral-900 dark:text-white tracking-tight">
             {listing.title}
           </h1>
-          <div className="flex flex-wrap items-center gap-3 text-sm text-neutral-600 dark:text-neutral-400 mt-2">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs sm:text-sm text-neutral-600 dark:text-neutral-300 mt-2">
             <div className="flex items-center gap-1 font-bold text-neutral-900 dark:text-white">
-              <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
+              <Star className="w-4 h-4 fill-[#C5A059] text-[#C5A059]" />
               <span>{listing.rating.toFixed(2)}</span>
             </div>
             <span>·</span>
-            <span className="font-semibold underline cursor-pointer">{listing.review_count} reviews</span>
+            <span className="font-semibold underline">{listing.review_count} verified reviews</span>
             {listing.host_is_superhost && (
               <>
                 <span>·</span>
-                <span className="inline-flex items-center gap-1 font-bold text-amber-700 dark:text-amber-400">
-                  <Award className="w-3.5 h-3.5" /> Superhost
+                <span className="inline-flex items-center gap-1 font-bold text-[#C5A059] dark:text-[#E5C158]">
+                  <Award className="w-3.5 h-3.5" /> Essence Superhost
                 </span>
               </>
             )}
             <span>·</span>
             <span className="font-medium text-neutral-700 dark:text-neutral-300 flex items-center gap-1">
-              <MapPin className="w-3.5 h-3.5 text-[#0EA5E9]" />
+              <MapPin className="w-3.5 h-3.5 text-[#C5A059]" />
               {listing.location}
             </span>
           </div>
@@ -140,28 +142,28 @@ export default function ListingDetail() {
         <div className="flex items-center gap-2 self-start md:self-auto">
           <button
             onClick={handleShare}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-full border border-neutral-200 dark:border-neutral-700 text-xs font-bold text-neutral-700 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+            className="flex items-center gap-1.5 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full border border-neutral-200 dark:border-[#1E3557] text-xs font-bold text-neutral-700 dark:text-neutral-200 hover:bg-[#C5A059]/10 transition-colors"
           >
-            <Share2 className="w-3.5 h-3.5" />
+            <Share2 className="w-3.5 h-3.5 text-[#C5A059]" />
             <span>{copiedLink ? 'Link Copied!' : 'Share'}</span>
           </button>
-          <div className="flex items-center gap-1.5 px-3 py-1 rounded-full border border-neutral-200 dark:border-neutral-700 text-xs font-bold">
+          <div className="flex items-center gap-1.5 px-3 py-1 sm:py-1.5 rounded-full border border-neutral-200 dark:border-[#1E3557] text-xs font-bold">
             <WishlistButton listingId={listing.id} size={18} />
             <span className="text-neutral-700 dark:text-neutral-200 pr-1">Save</span>
           </div>
         </div>
       </div>
 
-      {/* Airbnb-style Photo Mosaic Gallery */}
-      <div className="relative mb-10 overflow-hidden rounded-3xl">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-2.5 h-[340px] sm:h-[420px] md:h-[480px]">
-          {/* Main Large Photo (Left half) */}
+      {/* Photo Mosaic Gallery */}
+      <div className="relative mb-8 sm:mb-10 overflow-hidden rounded-2xl sm:rounded-3xl border border-neutral-200/70 dark:border-[#1E3557]">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-2 h-[260px] sm:h-[380px] md:h-[460px]">
+          {/* Main Large Photo */}
           <div
             onClick={() => {
               setSelectedPhotoIndex(0);
               setGalleryModalOpen(true);
             }}
-            className="md:col-span-2 h-full cursor-pointer overflow-hidden rounded-2xl group relative"
+            className="md:col-span-2 h-full cursor-pointer overflow-hidden rounded-xl sm:rounded-2xl group relative"
           >
             <img
               src={listing.photos[0]}
@@ -171,7 +173,7 @@ export default function ListingDetail() {
           </div>
 
           {/* 2x2 grid on right */}
-          <div className="hidden md:grid md:col-span-2 grid-cols-2 gap-2.5 h-full">
+          <div className="hidden md:grid md:col-span-2 grid-cols-2 gap-2 h-full">
             {listing.photos.slice(1, 5).map((photo, i) => (
               <div
                 key={i}
@@ -194,24 +196,24 @@ export default function ListingDetail() {
         {/* View all photos pill button */}
         <button
           onClick={() => setGalleryModalOpen(true)}
-          className="absolute bottom-4 right-4 px-4 py-2 rounded-xl bg-white/90 dark:bg-neutral-900/90 backdrop-blur-md text-xs font-bold text-neutral-900 dark:text-white shadow-lg border border-neutral-200 dark:border-neutral-700 hover:scale-105 transition-all flex items-center gap-1.5"
+          className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl bg-white/95 dark:bg-[#0A1422]/95 backdrop-blur-md text-xs font-bold text-neutral-900 dark:text-white shadow-lg border border-neutral-200 dark:border-[#1E3557] hover:scale-105 transition-all flex items-center gap-1.5"
         >
-          <Sparkles className="w-3.5 h-3.5 text-[#0EA5E9]" />
+          <Sparkles className="w-3.5 h-3.5 text-[#C5A059]" />
           <span>Show all {listing.photos.length} photos</span>
         </button>
       </div>
 
       {/* Main Content & Reservation Sidebar */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-        {/* Left Column: Details (8 cols) */}
-        <div className="lg:col-span-8 space-y-8">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10">
+        {/* Left Column: Details */}
+        <div className="lg:col-span-8 space-y-6 sm:space-y-8">
           {/* Host Overview */}
-          <div className="flex items-center justify-between pb-6 border-b border-neutral-200 dark:border-neutral-800">
+          <div className="flex items-center justify-between pb-6 border-b border-neutral-200 dark:border-[#1E3557]">
             <div>
-              <h2 className="text-xl font-bold text-neutral-900 dark:text-white">
+              <h2 className="text-lg sm:text-xl font-bold text-neutral-900 dark:text-white">
                 {listing.type} hosted by {listing.host_name}
               </h2>
-              <p className="text-sm text-neutral-500 dark:text-neutral-400 mt-1">
+              <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 mt-1">
                 {listing.max_guests} guests · {listing.bedrooms} bedrooms · {listing.beds} beds ·{' '}
                 {listing.bathrooms} baths
               </p>
@@ -220,50 +222,50 @@ export default function ListingDetail() {
               <img
                 src={listing.host_avatar}
                 alt={listing.host_name}
-                className="w-14 h-14 rounded-full object-cover ring-2 ring-[#0EA5E9]"
+                className="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover ring-2 ring-[#C5A059]"
               />
             ) : (
-              <div className="w-14 h-14 rounded-full bg-sky-100 dark:bg-sky-950 text-[#0EA5E9] flex items-center justify-center font-bold text-lg">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#C5A059]/20 text-[#C5A059] flex items-center justify-center font-bold text-lg">
                 {listing.host_name[0]}
               </div>
             )}
           </div>
 
-          {/* Highlights */}
-          <div className="space-y-4 pb-6 border-b border-neutral-200 dark:border-neutral-800">
-            <div className="flex items-start gap-4">
-              <div className="p-2.5 rounded-xl bg-sky-50 dark:bg-sky-950/40 text-[#0EA5E9] shrink-0">
+          {/* Valpromark Highlights */}
+          <div className="space-y-4 pb-6 border-b border-neutral-200 dark:border-[#1E3557]">
+            <div className="flex items-start gap-3 sm:gap-4">
+              <div className="p-2.5 rounded-xl bg-[#C5A059]/15 text-[#C5A059] shrink-0">
                 <Sparkles className="w-5 h-5" />
               </div>
               <div>
                 <h3 className="font-bold text-sm text-neutral-900 dark:text-neutral-100">
-                  Dedicated guest experience
+                  Managed by Valpromark Essence Management Services
                 </h3>
                 <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">
-                  Recent guests rated the check-in and cleanliness at 100% 5-stars.
+                  Professional hotel-grade linen, 24/7 dedicated concierge, power backup generator & high-speed Wi-Fi guaranteed.
                 </p>
               </div>
             </div>
 
-            <div className="flex items-start gap-4">
-              <div className="p-2.5 rounded-xl bg-sky-50 dark:bg-sky-950/40 text-[#0EA5E9] shrink-0">
+            <div className="flex items-start gap-3 sm:gap-4">
+              <div className="p-2.5 rounded-xl bg-[#C5A059]/15 text-[#C5A059] shrink-0">
                 <ShieldCheck className="w-5 h-5" />
               </div>
               <div>
                 <h3 className="font-bold text-sm text-neutral-900 dark:text-neutral-100">
-                  SkyCover Protection included
+                  Valpromark Luxe Safety & Booking Guarantee
                 </h3>
                 <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">
-                  Every booking comes with host cancellation protection and 24/7 safety support.
+                  Full security protection, verified property inspection in Ghana, and flexible cancellation policies.
                 </p>
               </div>
             </div>
           </div>
 
           {/* About Description */}
-          <div className="pb-6 border-b border-neutral-200 dark:border-neutral-800">
-            <h3 className="text-lg font-bold text-neutral-900 dark:text-white mb-3">
-              About this sanctuary
+          <div className="pb-6 border-b border-neutral-200 dark:border-[#1E3557]">
+            <h3 className="text-base sm:text-lg font-bold text-neutral-900 dark:text-white mb-3">
+              About this property
             </h3>
             <p className="text-sm text-neutral-700 dark:text-neutral-300 leading-relaxed whitespace-pre-line">
               {listing.description}
@@ -271,30 +273,30 @@ export default function ListingDetail() {
           </div>
 
           {/* Sleeping Arrangements */}
-          <div className="pb-6 border-b border-neutral-200 dark:border-neutral-800">
-            <h3 className="text-lg font-bold text-neutral-900 dark:text-white mb-4">
+          <div className="pb-6 border-b border-neutral-200 dark:border-[#1E3557]">
+            <h3 className="text-base sm:text-lg font-bold text-neutral-900 dark:text-white mb-4">
               Where you’ll sleep
             </h3>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               {Array.from({ length: listing.bedrooms }).map((_, i) => (
                 <div
                   key={i}
-                  className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-900/30"
+                  className="p-3.5 sm:p-4 rounded-2xl border border-neutral-200 dark:border-[#1E3557] bg-white dark:bg-[#0F1E33]"
                 >
-                  <Bed className="w-6 h-6 text-[#0EA5E9] mb-2" />
-                  <h4 className="font-bold text-sm text-neutral-900 dark:text-white">
+                  <Bed className="w-5 h-5 text-[#C5A059] mb-2" />
+                  <h4 className="font-bold text-xs sm:text-sm text-neutral-900 dark:text-white">
                     Bedroom {i + 1}
                   </h4>
-                  <p className="text-xs text-neutral-500 mt-0.5">1 King / Queen Bed</p>
+                  <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">King / Queen Suite</p>
                 </div>
               ))}
             </div>
           </div>
 
           {/* Amenities Grid */}
-          <div className="pb-6 border-b border-neutral-200 dark:border-neutral-800">
-            <h3 className="text-lg font-bold text-neutral-900 dark:text-white mb-4">
-              What this place offers
+          <div className="pb-6 border-b border-neutral-200 dark:border-[#1E3557]">
+            <h3 className="text-base sm:text-lg font-bold text-neutral-900 dark:text-white mb-4">
+              Amenities & features
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {listing.amenities.map((amenityId) => (
@@ -305,59 +307,49 @@ export default function ListingDetail() {
 
           {/* Reviews Section */}
           <div>
-            <div className="flex items-center gap-2 mb-6">
-              <Star className="w-6 h-6 fill-amber-400 text-amber-400" />
-              <h3 className="text-xl font-bold text-neutral-900 dark:text-white">
+            <div className="flex items-center gap-2 mb-4 sm:mb-6">
+              <Star className="w-5 h-5 fill-[#C5A059] text-[#C5A059]" />
+              <h3 className="text-lg sm:text-xl font-bold text-neutral-900 dark:text-white">
                 {listing.rating.toFixed(2)} · {listing.review_count} reviews
               </h3>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {(listing.reviews && listing.reviews.length > 0
                 ? listing.reviews
                 : [
                     {
-                      id: 'demo-rev-1',
-                      reviewer_name: 'Sarah Jenkins',
-                      reviewer_avatar:
-                        'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=256&q=80',
-                      rating: 5,
-                      comment:
-                        'One of the most extraordinary properties we have ever stayed in. The photos barely do justice to the views!',
-                      created_at: '2 weeks ago',
-                    },
-                    {
-                      id: 'demo-rev-2',
-                      reviewer_name: 'David & Liam',
+                      id: 'demo-rev-gh-1',
+                      reviewer_name: 'David Boateng',
                       reviewer_avatar:
                         'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=256&q=80',
                       rating: 5,
                       comment:
-                        'Super responsive host, spotless spaces, and top tier amenities. Cannot wait to book our next trip.',
-                      created_at: 'Last month',
+                        'Outstanding experience staying here. The Valpromark management made check-in effortless.',
+                      created_at: '2 weeks ago',
                     },
                   ]
               ).map((rev, i) => (
                 <div
                   key={i}
-                  className="p-5 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#1E1E1E] space-y-3"
+                  className="p-4 sm:p-5 rounded-2xl border border-neutral-200 dark:border-[#1E3557] bg-white dark:bg-[#0F1E33] space-y-2.5"
                 >
                   <div className="flex items-center gap-3">
                     <img
                       src={rev.reviewer_avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80'}
                       alt={rev.reviewer_name}
-                      className="w-10 h-10 rounded-full object-cover"
+                      className="w-9 h-9 rounded-full object-cover ring-1 ring-[#C5A059]"
                     />
                     <div>
-                      <h4 className="font-bold text-sm text-neutral-900 dark:text-white">
+                      <h4 className="font-bold text-xs sm:text-sm text-neutral-900 dark:text-white">
                         {rev.reviewer_name}
                       </h4>
-                      <p className="text-xs text-neutral-400">{rev.created_at}</p>
+                      <p className="text-[11px] text-neutral-400">{rev.created_at}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-1">
                     {Array.from({ length: 5 }).map((_, s) => (
-                      <Star key={s} className="w-3 h-3 fill-amber-400 text-amber-400" />
+                      <Star key={s} className="w-3 h-3 fill-[#C5A059] text-[#C5A059]" />
                     ))}
                   </div>
                   <p className="text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed">
@@ -369,26 +361,26 @@ export default function ListingDetail() {
           </div>
         </div>
 
-        {/* Right Column: Sticky Reservation Box (4 cols) */}
+        {/* Right Column: Sticky Reservation Box */}
         <div className="lg:col-span-4">
-          <div className="sticky top-28 p-6 rounded-3xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#1E1E1E] shadow-xl space-y-5">
+          <div className="sticky top-28 p-5 sm:p-6 rounded-3xl border border-neutral-200 dark:border-[#1E3557] bg-white dark:bg-[#0F1E33] shadow-xl space-y-5">
             <div className="flex items-baseline justify-between">
               <div>
-                <span className="text-2xl font-black text-neutral-900 dark:text-white">
-                  ${listing.price_per_night}
+                <span className="text-xl sm:text-2xl font-black text-neutral-900 dark:text-white">
+                  GH₵ {listing.price_per_night.toLocaleString()}
                 </span>
-                <span className="text-neutral-500 dark:text-neutral-400 text-sm ml-1">/ night</span>
+                <span className="text-neutral-500 dark:text-neutral-400 text-xs sm:text-sm ml-1">/ night</span>
               </div>
-              <div className="flex items-center gap-1 text-xs font-bold">
-                <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+              <div className="flex items-center gap-1 text-xs font-bold text-[#C5A059]">
+                <Star className="w-3.5 h-3.5 fill-[#C5A059] text-[#C5A059]" />
                 <span>{listing.rating.toFixed(2)}</span>
                 <span className="text-neutral-400 font-normal">({listing.review_count})</span>
               </div>
             </div>
 
             {/* Date Pickers & Guest Selector */}
-            <div className="rounded-2xl border border-neutral-200 dark:border-neutral-700 divide-y divide-neutral-200 dark:divide-neutral-700 overflow-hidden text-xs">
-              <div className="grid grid-cols-2 divide-x divide-neutral-200 dark:divide-neutral-700">
+            <div className="rounded-2xl border border-neutral-200 dark:border-[#1E3557] divide-y divide-neutral-200 dark:divide-[#1E3557] overflow-hidden text-xs bg-neutral-50/50 dark:bg-[#0A1422]/50">
+              <div className="grid grid-cols-2 divide-x divide-neutral-200 dark:divide-[#1E3557]">
                 <div className="p-2.5">
                   <label className="block font-bold uppercase text-[10px] text-neutral-400">
                     Check-in
@@ -427,7 +419,7 @@ export default function ListingDetail() {
                     type="button"
                     disabled={guestsCount <= 1}
                     onClick={() => setGuestsCount((c) => Math.max(1, c - 1))}
-                    className="w-7 h-7 rounded-full border border-neutral-300 dark:border-neutral-600 flex items-center justify-center font-bold disabled:opacity-30"
+                    className="w-7 h-7 rounded-full border border-neutral-300 dark:border-[#1E3557] flex items-center justify-center font-bold disabled:opacity-30 hover:border-[#C5A059]"
                   >
                     -
                   </button>
@@ -435,7 +427,7 @@ export default function ListingDetail() {
                     type="button"
                     disabled={guestsCount >= listing.max_guests}
                     onClick={() => setGuestsCount((c) => Math.min(listing.max_guests, c + 1))}
-                    className="w-7 h-7 rounded-full border border-neutral-300 dark:border-neutral-600 flex items-center justify-center font-bold disabled:opacity-30"
+                    className="w-7 h-7 rounded-full border border-neutral-300 dark:border-[#1E3557] flex items-center justify-center font-bold disabled:opacity-30 hover:border-[#C5A059]"
                   >
                     +
                   </button>
@@ -447,37 +439,37 @@ export default function ListingDetail() {
             <button
               id="reserve-now-btn"
               onClick={handleReserve}
-              className="w-full py-3.5 rounded-2xl font-bold text-base bg-[#0EA5E9] hover:bg-sky-600 text-white shadow-lg shadow-sky-500/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
+              className="w-full py-3.5 rounded-2xl font-bold text-sm sm:text-base bg-gradient-to-r from-[#DFB24A] via-[#C5A059] to-[#DFB24A] text-[#0E1E38] shadow-lg shadow-[#C5A059]/25 transition-all hover:scale-[1.02] active:scale-[0.98]"
             >
-              Reserve Stay
+              Reserve Stay in Ghana
             </button>
 
-            <p className="text-center text-xs text-neutral-400">You won’t be charged yet</p>
+            <p className="text-center text-xs text-neutral-400">Instant confirmation · No booking fees</p>
 
             {/* Pricing Calculation Breakdown */}
-            <div className="space-y-2.5 pt-4 border-t border-neutral-200 dark:border-neutral-800 text-xs text-neutral-600 dark:text-neutral-300">
+            <div className="space-y-2 pt-4 border-t border-neutral-200 dark:border-[#1E3557] text-xs text-neutral-600 dark:text-neutral-300">
               <div className="flex justify-between">
-                <span className="underline">
-                  ${listing.price_per_night} x {diffDays} nights
+                <span>
+                  GH₵ {listing.price_per_night.toLocaleString()} x {diffDays} nights
                 </span>
-                <span>${baseTotal}</span>
+                <span className="font-semibold">GH₵ {baseTotal.toLocaleString()}</span>
               </div>
               <div className="flex justify-between">
-                <span className="underline">Cleaning fee</span>
-                <span>${listing.cleaning_fee}</span>
+                <span>Valpromark concierge & cleaning</span>
+                <span className="font-semibold">GH₵ {listing.cleaning_fee.toLocaleString()}</span>
               </div>
               <div className="flex justify-between">
-                <span className="underline">Skybnb service fee</span>
-                <span>${serviceFee}</span>
+                <span>Management & service fee</span>
+                <span className="font-semibold">GH₵ {serviceFee.toLocaleString()}</span>
               </div>
               <div className="flex justify-between">
-                <span className="underline">Occupancy taxes</span>
-                <span>${taxes}</span>
+                <span>Ghana tourism & local levy</span>
+                <span className="font-semibold">GH₵ {taxes.toLocaleString()}</span>
               </div>
 
-              <div className="flex justify-between font-bold text-sm text-neutral-900 dark:text-white pt-3 border-t border-neutral-200 dark:border-neutral-800">
-                <span>Total before taxes</span>
-                <span className="text-base text-[#0EA5E9]">${grandTotal}</span>
+              <div className="flex justify-between font-bold text-sm text-neutral-900 dark:text-white pt-3 border-t border-neutral-200 dark:border-[#1E3557]">
+                <span>Total (GH₵)</span>
+                <span className="text-base text-[#C5A059] font-extrabold">GH₵ {grandTotal.toLocaleString()}</span>
               </div>
             </div>
           </div>
@@ -517,7 +509,7 @@ export default function ListingDetail() {
                   key={idx}
                   onClick={() => setSelectedPhotoIndex(idx)}
                   className={`w-16 h-12 rounded-lg overflow-hidden shrink-0 border-2 transition-all ${
-                    idx === selectedPhotoIndex ? 'border-[#0EA5E9] scale-105' : 'border-transparent opacity-60'
+                    idx === selectedPhotoIndex ? 'border-[#C5A059] scale-105' : 'border-transparent opacity-60'
                   }`}
                 >
                   <img src={p} alt="" className="w-full h-full object-cover" />

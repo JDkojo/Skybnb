@@ -12,7 +12,6 @@ import {
   Building2,
   MapPin,
   CheckCircle2,
-  XCircle,
   PlusCircle,
   Key,
 } from 'lucide-react';
@@ -41,17 +40,17 @@ export default function Profile() {
 
   if (!user) {
     return (
-      <div className="max-w-md mx-auto my-20 p-8 text-center bg-white dark:bg-[#1E1E1E] rounded-3xl border border-neutral-200 dark:border-neutral-800 shadow-xl space-y-5">
-        <div className="w-16 h-16 rounded-full bg-sky-50 dark:bg-sky-950/40 text-[#0EA5E9] flex items-center justify-center mx-auto">
+      <div className="max-w-md mx-auto my-16 p-6 sm:p-8 text-center bg-white dark:bg-[#0F1E33] rounded-3xl border border-neutral-200 dark:border-[#1E3557] shadow-xl space-y-5">
+        <div className="w-16 h-16 rounded-full bg-[#C5A059]/20 text-[#C5A059] flex items-center justify-center mx-auto">
           <UserIcon className="w-8 h-8" />
         </div>
-        <h2 className="text-xl font-bold text-neutral-900 dark:text-white">Sign in to your Profile</h2>
-        <p className="text-sm text-neutral-500">
-          Sign in to view your confirmed bookings, manage wishlists, or host your properties on Skybnb.
+        <h2 className="text-xl font-bold text-neutral-900 dark:text-white">Sign in to Valpromark</h2>
+        <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400">
+          Sign in to view your confirmed Ghana reservations, manage saved properties, or list accommodation.
         </p>
         <button
           onClick={() => setAuthModal(true, 'signin')}
-          className="w-full py-3 rounded-full font-bold text-sm bg-[#0EA5E9] text-white hover:bg-sky-600 shadow-md"
+          className="w-full py-3 rounded-full font-bold text-sm bg-[#C5A059] text-[#0E1E38] hover:bg-[#DFB24A] shadow-md"
         >
           Sign In / Sign Up
         </button>
@@ -60,25 +59,25 @@ export default function Profile() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-28 min-h-screen">
+    <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-8 pb-28 min-h-screen">
       {/* Profile Header Card */}
-      <div className="p-6 sm:p-8 rounded-3xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#1E1E1E] shadow-sm mb-8">
+      <div className="p-5 sm:p-8 rounded-3xl border border-neutral-200 dark:border-[#1E3557] bg-white dark:bg-[#0F1E33] shadow-sm mb-6 sm:mb-8">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-4 sm:gap-5">
             <div className="relative">
               {user.avatar_url ? (
                 <img
                   src={user.avatar_url}
                   alt={user.full_name}
-                  className="w-20 h-20 rounded-full object-cover ring-4 ring-[#0EA5E9]/30"
+                  className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover ring-4 ring-[#C5A059]/30"
                 />
               ) : (
-                <div className="w-20 h-20 rounded-full bg-neutral-200 dark:bg-neutral-800 flex items-center justify-center text-neutral-700 dark:text-neutral-300 font-bold text-2xl">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#C5A059]/20 flex items-center justify-center text-[#C5A059] font-bold text-2xl">
                   {user.full_name[0]}
                 </div>
               )}
               {user.is_host && (
-                <div className="absolute -bottom-1 -right-1 p-1.5 rounded-full bg-amber-500 text-white shadow-md">
+                <div className="absolute -bottom-1 -right-1 p-1.5 rounded-full bg-[#C5A059] text-[#0E1E38] shadow-md">
                   <ShieldCheck className="w-4 h-4" />
                 </div>
               )}
@@ -86,31 +85,31 @@ export default function Profile() {
 
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-2xl font-black text-neutral-900 dark:text-white">
+                <h1 className="text-xl sm:text-2xl font-black text-neutral-900 dark:text-white">
                   {user.full_name}
                 </h1>
                 {user.is_host && (
-                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300">
-                    Superhost
+                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-[#C5A059]/20 text-[#C5A059]">
+                    Host
                   </span>
                 )}
               </div>
-              <p className="text-sm text-neutral-500 dark:text-neutral-400 mt-0.5">{user.email}</p>
-              <p className="text-xs text-neutral-400 mt-1">Member since {user.joined_date || '2024'}</p>
+              <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 mt-0.5">{user.email}</p>
+              <p className="text-[11px] text-neutral-400 mt-1">Valpromark Member since {user.joined_date || '2024'}</p>
             </div>
           </div>
 
           <div className="flex flex-wrap items-center gap-2.5">
             <Link
               to="/host/create"
-              className="px-4 py-2 rounded-full font-bold text-xs bg-[#0EA5E9] text-white hover:bg-sky-600 transition-colors shadow-sm flex items-center gap-1.5"
+              className="px-4 py-2 rounded-full font-bold text-xs bg-[#C5A059] text-[#0E1E38] hover:bg-[#DFB24A] transition-colors shadow-sm flex items-center gap-1.5"
             >
               <PlusCircle className="w-3.5 h-3.5" />
-              <span>Skybnb your home</span>
+              <span>List your Ghana home</span>
             </Link>
             <button
               onClick={() => signOut()}
-              className="px-4 py-2 rounded-full font-semibold text-xs border border-neutral-300 dark:border-neutral-700 text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors flex items-center gap-1.5"
+              className="px-4 py-2 rounded-full font-semibold text-xs border border-neutral-300 dark:border-[#1E3557] text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors flex items-center gap-1.5"
             >
               <LogOut className="w-3.5 h-3.5" />
               <span>Sign out</span>
@@ -120,12 +119,12 @@ export default function Profile() {
       </div>
 
       {/* Tabs Navigation */}
-      <div className="flex items-center gap-2 border-b border-neutral-200 dark:border-neutral-800 pb-3 mb-6 overflow-x-auto">
+      <div className="flex items-center gap-2 border-b border-neutral-200 dark:border-[#1E3557] pb-3 mb-6 overflow-x-auto no-scrollbar">
         <button
           onClick={() => setTab('trips')}
           className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-colors whitespace-nowrap ${
             activeTab === 'trips'
-              ? 'bg-neutral-900 dark:bg-white text-white dark:text-neutral-900'
+              ? 'bg-[#C5A059] text-[#0E1E38]'
               : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white'
           }`}
         >
@@ -137,7 +136,7 @@ export default function Profile() {
           onClick={() => setTab('host')}
           className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-colors whitespace-nowrap ${
             activeTab === 'host'
-              ? 'bg-neutral-900 dark:bg-white text-white dark:text-neutral-900'
+              ? 'bg-[#C5A059] text-[#0E1E38]'
               : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white'
           }`}
         >
@@ -149,12 +148,12 @@ export default function Profile() {
           onClick={() => setTab('settings')}
           className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-colors whitespace-nowrap ${
             activeTab === 'settings'
-              ? 'bg-neutral-900 dark:bg-white text-white dark:text-neutral-900'
+              ? 'bg-[#C5A059] text-[#0E1E38]'
               : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white'
           }`}
         >
           <Sparkles className="w-4 h-4" />
-          <span>Settings & Demo Accounts</span>
+          <span>Settings & Personas</span>
         </button>
       </div>
 
@@ -162,30 +161,30 @@ export default function Profile() {
       {activeTab === 'trips' && (
         <div className="space-y-6">
           {bookings.length === 0 ? (
-            <div className="max-w-md mx-auto my-12 p-8 text-center bg-white dark:bg-[#1E1E1E] rounded-3xl border border-neutral-200 dark:border-neutral-800 space-y-4">
-              <CalendarDays className="w-12 h-12 text-neutral-400 mx-auto" />
-              <h3 className="text-lg font-bold text-neutral-900 dark:text-white">No trips booked... yet!</h3>
-              <p className="text-xs text-neutral-500">
-                Time to dust off your bags and start planning your next great accommodation escape.
+            <div className="max-w-md mx-auto my-12 p-8 text-center bg-white dark:bg-[#0F1E33] rounded-3xl border border-neutral-200 dark:border-[#1E3557] space-y-4">
+              <CalendarDays className="w-12 h-12 text-[#C5A059] mx-auto" />
+              <h3 className="text-lg font-bold text-neutral-900 dark:text-white">No trips booked yet</h3>
+              <p className="text-xs text-neutral-500 dark:text-neutral-400">
+                Explore luxury penthouses, ocean retreats, and hilltop villas across Ghana.
               </p>
               <Link
                 to="/"
-                className="inline-block px-6 py-2.5 rounded-full font-bold text-xs bg-[#0EA5E9] text-white"
+                className="inline-block px-6 py-2.5 rounded-full font-bold text-xs bg-[#C5A059] text-[#0E1E38]"
               >
-                Start Searching
+                Start Searching Ghana Stays
               </Link>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
               {bookings.map((booking) => (
                 <div
                   key={booking.id}
-                  className="p-5 rounded-3xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#1E1E1E] shadow-sm flex flex-col justify-between"
+                  className="p-5 rounded-3xl border border-neutral-200 dark:border-[#1E3557] bg-white dark:bg-[#0F1E33] shadow-sm flex flex-col justify-between"
                 >
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-mono font-bold text-neutral-400">
-                        REF: {booking.id.slice(-8).toUpperCase()}
+                      <span className="text-xs font-mono font-bold text-[#C5A059]">
+                        VALPRO-GH-{booking.id.slice(-6).toUpperCase()}
                       </span>
                       <span
                         className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase ${
@@ -208,8 +207,8 @@ export default function Profile() {
                         <h4 className="font-bold text-sm text-neutral-900 dark:text-white truncate">
                           {booking.listing_title}
                         </h4>
-                        <p className="text-xs text-neutral-500 truncate mt-0.5 flex items-center gap-1">
-                          <MapPin className="w-3 h-3 text-[#0EA5E9]" />
+                        <p className="text-xs text-neutral-500 dark:text-neutral-400 truncate mt-0.5 flex items-center gap-1">
+                          <MapPin className="w-3 h-3 text-[#C5A059]" />
                           {booking.listing_location}
                         </p>
                         <p className="text-xs text-neutral-700 dark:text-neutral-300 font-semibold mt-1">
@@ -218,11 +217,11 @@ export default function Profile() {
                       </div>
                     </div>
 
-                    <div className="pt-3 border-t border-neutral-100 dark:border-neutral-800/80 flex items-center justify-between text-xs">
+                    <div className="pt-3 border-t border-neutral-100 dark:border-[#1E3557]/80 flex items-center justify-between text-xs">
                       <div>
-                        <span className="text-neutral-400">Total Paid: </span>
-                        <span className="font-bold text-sm text-neutral-900 dark:text-white">
-                          ${booking.total_price}
+                        <span className="text-neutral-400">Total: </span>
+                        <span className="font-bold text-sm text-[#C5A059]">
+                          GH₵ {booking.total_price.toLocaleString()}
                         </span>
                       </div>
                       <span className="text-neutral-500">{booking.guests_count} guests</span>
@@ -230,12 +229,12 @@ export default function Profile() {
                   </div>
 
                   {booking.status === 'confirmed' && (
-                    <div className="mt-4 pt-3 border-t border-neutral-100 dark:border-neutral-800 flex items-center justify-between">
+                    <div className="mt-4 pt-3 border-t border-neutral-100 dark:border-[#1E3557]/80 flex items-center justify-between">
                       <Link
                         to={`/listing/${booking.listing_id}`}
-                        className="text-xs font-bold text-[#0EA5E9] hover:underline"
+                        className="text-xs font-bold text-[#C5A059] hover:underline"
                       >
-                        View Listing
+                        View Stay Details
                       </Link>
                       <button
                         onClick={() => cancelBooking(booking.id)}
@@ -256,110 +255,84 @@ export default function Profile() {
       {activeTab === 'host' && (
         <div className="space-y-6">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="p-5 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#1E1E1E]">
+            <div className="p-5 rounded-2xl border border-neutral-200 dark:border-[#1E3557] bg-white dark:bg-[#0F1E33]">
               <span className="text-xs text-neutral-400 font-bold uppercase">Superhost Rating</span>
               <p className="text-2xl font-black text-neutral-900 dark:text-white mt-1">4.98 ★</p>
-              <p className="text-xs text-emerald-600 mt-1 font-semibold">Top 1% of hosts</p>
+              <p className="text-xs text-emerald-600 mt-1 font-semibold">Top host in Accra</p>
             </div>
-            <div className="p-5 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#1E1E1E]">
+            <div className="p-5 rounded-2xl border border-neutral-200 dark:border-[#1E3557] bg-white dark:bg-[#0F1E33]">
               <span className="text-xs text-neutral-400 font-bold uppercase">Total Bookings</span>
               <p className="text-2xl font-black text-neutral-900 dark:text-white mt-1">28</p>
               <p className="text-xs text-neutral-500 mt-1">100% response rate</p>
             </div>
-            <div className="p-5 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#1E1E1E]">
-              <span className="text-xs text-neutral-400 font-bold uppercase">Host Earnings</span>
-              <p className="text-2xl font-black text-[#0EA5E9] mt-1">$14,280</p>
-              <p className="text-xs text-neutral-500 mt-1">Auto deposited</p>
+            <div className="p-5 rounded-2xl border border-neutral-200 dark:border-[#1E3557] bg-white dark:bg-[#0F1E33]">
+              <span className="text-xs text-neutral-400 font-bold uppercase">Ghana Cedis Earnings</span>
+              <p className="text-2xl font-black text-[#C5A059] mt-1">GH₵ 78,500</p>
+              <p className="text-xs text-neutral-500 mt-1">Payout via MTN MoMo / Wire</p>
             </div>
           </div>
 
-          <div className="flex gap-4">
+          <div className="flex flex-wrap gap-4">
             <Link
               to="/host/my-listings"
-              className="px-6 py-3 rounded-full font-bold text-sm bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 hover:opacity-90"
+              className="px-6 py-3 rounded-full font-bold text-xs sm:text-sm bg-[#0E1E38] dark:bg-[#C5A059] text-white dark:text-[#0E1E38] hover:opacity-90"
             >
               Manage My Listings
             </Link>
             <Link
               to="/host/create"
-              className="px-6 py-3 rounded-full font-bold text-sm bg-[#0EA5E9] text-white hover:bg-sky-600"
+              className="px-6 py-3 rounded-full font-bold text-xs sm:text-sm bg-gradient-to-r from-[#DFB24A] via-[#C5A059] to-[#DFB24A] text-[#0E1E38] shadow-md"
             >
-              Create Another Listing
+              Add New Ghana Listing
             </Link>
           </div>
         </div>
       )}
 
-      {/* TAB 3: Settings & Demo Accounts */}
+      {/* TAB 3: Settings & Personas */}
       {activeTab === 'settings' && (
         <div className="max-w-2xl space-y-6">
           {/* Quick Demo Switcher */}
-          <div className="p-6 rounded-3xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#1E1E1E] space-y-4">
-            <h3 className="font-bold text-base text-neutral-900 dark:text-white flex items-center gap-2">
-              <Key className="w-4 h-4 text-[#0EA5E9]" />
+          <div className="p-5 sm:p-6 rounded-3xl border border-neutral-200 dark:border-[#1E3557] bg-white dark:bg-[#0F1E33] space-y-4">
+            <h3 className="font-bold text-sm sm:text-base text-neutral-900 dark:text-white flex items-center gap-2">
+              <Key className="w-4 h-4 text-[#C5A059]" />
               <span>Switch Demo Persona for Instant Testing</span>
             </h3>
-            <p className="text-xs text-neutral-500">
-              Quickly switch between guest and superhost profiles without entering any passwords.
+            <p className="text-xs text-neutral-500 dark:text-neutral-400">
+              Quickly switch between guest and host profiles to explore Ghana accommodation management.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <button
                 onClick={() => loginAsDemoUser('guest')}
-                className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-700 hover:border-[#0EA5E9] text-left transition-colors bg-neutral-50 dark:bg-neutral-900/40"
+                className="p-4 rounded-2xl border border-neutral-200 dark:border-[#1E3557] hover:border-[#C5A059] text-left transition-colors bg-neutral-50 dark:bg-[#0A1422]/60"
               >
-                <p className="font-bold text-sm text-neutral-900 dark:text-white">Alex Rivera (Guest)</p>
-                <p className="text-xs text-neutral-500 mt-1">Has confirmed bookings & wishlists</p>
+                <p className="font-bold text-xs sm:text-sm text-neutral-900 dark:text-white">Kwame Mensah (Guest)</p>
+                <p className="text-[11px] text-neutral-500 mt-1">Has confirmed Ghana bookings & saved villas</p>
               </button>
 
               <button
                 onClick={() => loginAsDemoUser('host')}
-                className="p-4 rounded-2xl border border-neutral-200 dark:border-neutral-700 hover:border-[#0EA5E9] text-left transition-colors bg-neutral-50 dark:bg-neutral-900/40"
+                className="p-4 rounded-2xl border border-neutral-200 dark:border-[#1E3557] hover:border-[#C5A059] text-left transition-colors bg-neutral-50 dark:bg-[#0A1422]/60"
               >
-                <p className="font-bold text-sm text-neutral-900 dark:text-white">Elena Rostova (Superhost)</p>
-                <p className="text-xs text-neutral-500 mt-1">Owns cave villa in Santorini</p>
+                <p className="font-bold text-xs sm:text-sm text-neutral-900 dark:text-white">Akosua Boateng (Superhost)</p>
+                <p className="text-[11px] text-neutral-500 mt-1">Hosts executive penthouses in Accra & Aburi</p>
               </button>
             </div>
           </div>
 
           {/* Theme Settings */}
-          <div className="p-6 rounded-3xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#1E1E1E] flex items-center justify-between">
+          <div className="p-5 sm:p-6 rounded-3xl border border-neutral-200 dark:border-[#1E3557] bg-white dark:bg-[#0F1E33] flex items-center justify-between">
             <div>
-              <h4 className="font-bold text-sm text-neutral-900 dark:text-white">Interface Appearance</h4>
-              <p className="text-xs text-neutral-500">Currently active: {isDark ? 'Dark Mode' : 'Light Mode'}</p>
+              <h4 className="font-bold text-xs sm:text-sm text-neutral-900 dark:text-white">Interface Appearance</h4>
+              <p className="text-xs text-neutral-500 dark:text-neutral-400">Currently active: {isDark ? 'Valpromark Navy Luxury' : 'Daylight Classic'}</p>
             </div>
             <button
               onClick={toggleTheme}
-              className="flex items-center gap-2 px-4 py-2 rounded-full font-bold text-xs border border-neutral-300 dark:border-neutral-700"
+              className="flex items-center gap-2 px-4 py-2 rounded-full font-bold text-xs border border-neutral-300 dark:border-[#1E3557] text-[#C5A059]"
             >
               {isDark ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-neutral-700" />}
               <span>Toggle Theme</span>
             </button>
-          </div>
-
-          {/* Supabase Status */}
-          <div className="p-6 rounded-3xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#1E1E1E] flex items-start gap-4">
-            <div className="p-2.5 rounded-2xl bg-sky-50 dark:bg-sky-950/40 text-[#0EA5E9]">
-              <Database className="w-5 h-5" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h4 className="font-bold text-sm text-neutral-900 dark:text-white">Database & Auth Engine</h4>
-                <span
-                  className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${
-                    isSupabaseConfigured
-                      ? 'bg-emerald-100 text-emerald-800'
-                      : 'bg-sky-100 text-sky-800 dark:bg-sky-950/60 dark:text-sky-300'
-                  }`}
-                >
-                  {isSupabaseConfigured ? 'Supabase Connected' : 'Local Fast-Storage Active'}
-                </span>
-              </div>
-              <p className="text-xs text-neutral-500 mt-1 leading-relaxed">
-                {isSupabaseConfigured
-                  ? 'All listings, bookings, and wishlists are syncing with your real Supabase cloud project.'
-                  : 'Operating in self-contained high performance mode. Configure VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in settings anytime to switch to cloud Postgres.'}
-              </p>
-            </div>
           </div>
         </div>
       )}

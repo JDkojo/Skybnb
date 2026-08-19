@@ -8,7 +8,7 @@ export function CategoryFilterBar() {
   const setFilter = useSearchStore((s) => s.setFilter);
 
   return (
-    <div className="w-full flex items-center overflow-x-auto no-scrollbar gap-6 sm:gap-8 py-3 px-1 border-b border-neutral-200 dark:border-neutral-800/80">
+    <div className="w-full flex items-center overflow-x-auto no-scrollbar gap-5 sm:gap-7 py-3 px-1 border-b border-neutral-200/80 dark:border-[#1E3557]/80">
       {CATEGORIES.map((cat) => {
         const isActive = currentCategory.toLowerCase() === cat.id.toLowerCase();
         const IconComponent = (Icons as any)[cat.iconName] || Icons.Sparkles;
@@ -18,22 +18,22 @@ export function CategoryFilterBar() {
             key={cat.id}
             id={`category-${cat.id}`}
             onClick={() => setFilter('category', cat.id)}
-            className={`group relative flex flex-col items-center gap-1.5 pb-2 text-xs font-semibold whitespace-nowrap transition-all duration-200 shrink-0 ${
+            className={`group relative flex flex-col items-center gap-1.5 pb-2 text-xs font-bold whitespace-nowrap transition-all duration-200 shrink-0 touch-manipulation min-w-[50px] ${
               isActive
-                ? 'text-[#0EA5E9] dark:text-[#0EA5E9]'
-                : 'text-neutral-500 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200'
+                ? 'text-[#C5A059] dark:text-[#E5C158]'
+                : 'text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-200'
             }`}
           >
             <IconComponent
               className={`w-5 h-5 transition-transform group-hover:scale-110 ${
-                isActive ? 'stroke-[2.2]' : 'stroke-[1.7]'
+                isActive ? 'stroke-[2.5] text-[#C5A059] dark:text-[#E5C158]' : 'stroke-[1.8]'
               }`}
             />
-            <span>{cat.label}</span>
+            <span className="text-[11px] sm:text-xs">{cat.label}</span>
 
-            {/* Active underline indicator */}
+            {/* Active gold underline indicator */}
             {isActive && (
-              <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#0EA5E9] rounded-full" />
+              <span className="absolute bottom-0 left-1 right-1 h-[2.5px] bg-[#C5A059] dark:bg-[#E5C158] rounded-full shadow-[0_0_8px_rgba(197,160,89,0.5)]" />
             )}
           </button>
         );

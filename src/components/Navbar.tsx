@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
-  Compass,
   Menu,
   User as UserIcon,
   PlusCircle,
@@ -12,7 +11,9 @@ import {
   Map,
   Grid,
   ShieldCheck,
+  Building2,
 } from 'lucide-react';
+import { ValpromarkLogo } from './ValpromarkLogo';
 import { SearchBar } from './SearchBar';
 import { ThemeToggle } from './ThemeToggle';
 import { useAuthStore } from '../store/useAuthStore';
@@ -41,52 +42,53 @@ export function Navbar() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-white/95 dark:bg-[#121212]/95 backdrop-blur-md border-b border-neutral-200 dark:border-neutral-800 transition-colors">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
-        {/* Brand Logo */}
+    <header className="sticky top-0 z-40 w-full bg-white/95 dark:bg-[#0A1422]/95 backdrop-blur-md border-b border-neutral-200/80 dark:border-[#1E3557]/80 transition-colors">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-2 sm:gap-4">
+        {/* Valpromark Brand Logo */}
         <Link
           to="/"
-          id="skybnb-logo"
-          className="flex items-center gap-2.5 group shrink-0"
+          id="valpromark-logo"
+          className="flex items-center group shrink-0"
         >
-          <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#0EA5E9] to-sky-400 flex items-center justify-center text-white shadow-md group-hover:scale-105 transition-transform">
-            <Compass className="w-6 h-6 stroke-[2.2]" />
+          {/* Full logo on medium/large, compact on mobile */}
+          <div className="hidden sm:block">
+            <ValpromarkLogo variant="full" size="md" />
           </div>
-          <span className="text-xl font-extrabold tracking-tight text-neutral-900 dark:text-white">
-            Sky<span className="text-[#0EA5E9]">bnb</span>
-          </span>
+          <div className="sm:hidden">
+            <ValpromarkLogo variant="compact" size="sm" />
+          </div>
         </Link>
 
         {/* Center Search Pill */}
-        <div className="flex-1 max-w-lg mx-2 flex justify-center">
+        <div className="flex-1 max-w-md lg:max-w-lg mx-1 sm:mx-2 flex justify-center">
           <SearchBar />
         </div>
 
         {/* Right Actions */}
-        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+        <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
           {/* Host link */}
           <Link
             to="/host/create"
-            className="hidden md:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-bold text-neutral-700 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+            className="hidden md:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-bold text-neutral-800 dark:text-[#E5C158] hover:bg-[#C5A059]/10 transition-colors border border-transparent hover:border-[#C5A059]/30"
           >
-            <PlusCircle className="w-4 h-4 text-[#0EA5E9]" />
-            <span>Skybnb your home</span>
+            <PlusCircle className="w-4 h-4 text-[#C5A059]" />
+            <span>List with Valpromark</span>
           </Link>
 
           {/* Grid / Map Toggle Button */}
           <button
             onClick={() => setViewMode(viewMode === 'grid' ? 'map' : 'grid')}
-            className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-full border border-neutral-200 dark:border-neutral-700 text-xs font-bold text-neutral-700 dark:text-neutral-300 hover:border-[#0EA5E9] hover:text-[#0EA5E9] transition-all bg-white dark:bg-[#1E1E1E]"
+            className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-full border border-neutral-200 dark:border-[#1E3557] text-xs font-bold text-neutral-700 dark:text-neutral-300 hover:border-[#C5A059] hover:text-[#C5A059] transition-all bg-white dark:bg-[#0F1E33]"
             title={`Switch to ${viewMode === 'grid' ? 'Map' : 'Grid'} view`}
           >
             {viewMode === 'grid' ? (
               <>
-                <Map className="w-3.5 h-3.5" />
+                <Map className="w-3.5 h-3.5 text-[#C5A059]" />
                 <span>Map</span>
               </>
             ) : (
               <>
-                <Grid className="w-3.5 h-3.5" />
+                <Grid className="w-3.5 h-3.5 text-[#C5A059]" />
                 <span>Grid</span>
               </>
             )}
@@ -100,17 +102,17 @@ export function Navbar() {
             <button
               id="user-menu-btn"
               onClick={() => setMenuOpen(!menuOpen)}
-              className="flex items-center gap-2.5 p-1.5 pl-3 rounded-full border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-[#1E1E1E] hover:shadow-md transition-all duration-200"
+              className="flex items-center gap-2 p-1.5 pl-2.5 sm:pl-3 rounded-full border border-neutral-200 dark:border-[#1E3557] bg-white dark:bg-[#0F1E33] hover:border-[#C5A059] hover:shadow-md transition-all duration-200"
             >
               <Menu className="w-4 h-4 text-neutral-600 dark:text-neutral-300" />
               {user?.avatar_url ? (
                 <img
                   src={user.avatar_url}
                   alt={user.full_name}
-                  className="w-7 h-7 rounded-full object-cover ring-2 ring-[#0EA5E9]/40"
+                  className="w-7 h-7 rounded-full object-cover ring-2 ring-[#C5A059]"
                 />
               ) : (
-                <div className="w-7 h-7 rounded-full bg-neutral-200 dark:bg-neutral-700 flex items-center justify-center text-neutral-600 dark:text-neutral-300">
+                <div className="w-7 h-7 rounded-full bg-neutral-100 dark:bg-[#1E3557] flex items-center justify-center text-[#C5A059]">
                   <UserIcon className="w-4 h-4" />
                 </div>
               )}
@@ -118,17 +120,17 @@ export function Navbar() {
 
             {/* Dropdown Box */}
             {menuOpen && (
-              <div className="absolute right-0 mt-2 w-64 rounded-2xl bg-white dark:bg-[#1E1E1E] shadow-2xl border border-neutral-200 dark:border-neutral-800 py-2 z-50 text-sm animate-in fade-in slide-in-from-top-2 duration-150">
+              <div className="absolute right-0 mt-2 w-64 rounded-2xl bg-white dark:bg-[#0F1E33] shadow-2xl border border-neutral-200 dark:border-[#1E3557] py-2 z-50 text-sm animate-in fade-in slide-in-from-top-2 duration-150">
                 {user ? (
                   <>
-                    <div className="px-4 py-2.5 border-b border-neutral-100 dark:border-neutral-800/80">
+                    <div className="px-4 py-2.5 border-b border-neutral-100 dark:border-[#1E3557]/80">
                       <p className="font-bold text-neutral-900 dark:text-white truncate">
                         {user.full_name}
                       </p>
-                      <p className="text-xs text-neutral-500 truncate">{user.email}</p>
+                      <p className="text-xs text-neutral-500 dark:text-neutral-400 truncate">{user.email}</p>
                       {user.is_host && (
-                        <span className="inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300">
-                          <ShieldCheck className="w-3 h-3" /> Superhost
+                        <span className="inline-flex items-center gap-1 mt-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase bg-[#C5A059]/15 text-[#C5A059] border border-[#C5A059]/30">
+                          <ShieldCheck className="w-3 h-3" /> Essence Superhost
                         </span>
                       )}
                     </div>
@@ -136,49 +138,49 @@ export function Navbar() {
                     <Link
                       to="/wishlists"
                       onClick={() => setMenuOpen(false)}
-                      className="flex items-center gap-2.5 px-4 py-2.5 text-neutral-700 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-800/60 transition-colors"
+                      className="flex items-center gap-2.5 px-4 py-2.5 text-neutral-700 dark:text-neutral-200 hover:bg-[#C5A059]/10 hover:text-[#C5A059] transition-colors"
                     >
-                      <Heart className="w-4 h-4 text-[#0EA5E9]" />
-                      <span>Wishlists</span>
+                      <Heart className="w-4 h-4 text-[#C5A059]" />
+                      <span>Saved Wishlists</span>
                     </Link>
 
                     <Link
                       to="/profile?tab=trips"
                       onClick={() => setMenuOpen(false)}
-                      className="flex items-center gap-2.5 px-4 py-2.5 text-neutral-700 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-800/60 transition-colors"
+                      className="flex items-center gap-2.5 px-4 py-2.5 text-neutral-700 dark:text-neutral-200 hover:bg-[#C5A059]/10 hover:text-[#C5A059] transition-colors"
                     >
-                      <CalendarDays className="w-4 h-4 text-[#0EA5E9]" />
-                      <span>My Trips & Bookings</span>
+                      <CalendarDays className="w-4 h-4 text-[#C5A059]" />
+                      <span>My Ghana Trips</span>
                     </Link>
 
                     <Link
                       to="/host/my-listings"
                       onClick={() => setMenuOpen(false)}
-                      className="flex items-center gap-2.5 px-4 py-2.5 text-neutral-700 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-800/60 transition-colors"
+                      className="flex items-center gap-2.5 px-4 py-2.5 text-neutral-700 dark:text-neutral-200 hover:bg-[#C5A059]/10 hover:text-[#C5A059] transition-colors"
                     >
-                      <Sparkles className="w-4 h-4 text-[#0EA5E9]" />
-                      <span>Manage Listings</span>
+                      <Building2 className="w-4 h-4 text-[#C5A059]" />
+                      <span>Host Property Hub</span>
                     </Link>
 
                     <Link
                       to="/host/create"
                       onClick={() => setMenuOpen(false)}
-                      className="flex items-center gap-2.5 px-4 py-2.5 text-neutral-700 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-800/60 transition-colors"
+                      className="flex items-center gap-2.5 px-4 py-2.5 text-neutral-700 dark:text-neutral-200 hover:bg-[#C5A059]/10 hover:text-[#C5A059] transition-colors"
                     >
-                      <PlusCircle className="w-4 h-4 text-[#0EA5E9]" />
-                      <span>Create New Listing</span>
+                      <PlusCircle className="w-4 h-4 text-[#C5A059]" />
+                      <span>List a Property in Ghana</span>
                     </Link>
 
                     <Link
                       to="/profile"
                       onClick={() => setMenuOpen(false)}
-                      className="flex items-center gap-2.5 px-4 py-2.5 text-neutral-700 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-800/60 transition-colors"
+                      className="flex items-center gap-2.5 px-4 py-2.5 text-neutral-700 dark:text-neutral-200 hover:bg-[#C5A059]/10 hover:text-[#C5A059] transition-colors"
                     >
-                      <UserIcon className="w-4 h-4 text-[#0EA5E9]" />
-                      <span>Account Profile</span>
+                      <UserIcon className="w-4 h-4 text-[#C5A059]" />
+                      <span>Account Settings</span>
                     </Link>
 
-                    <div className="border-t border-neutral-100 dark:border-neutral-800/80 my-1" />
+                    <div className="border-t border-neutral-100 dark:border-[#1E3557]/80 my-1" />
 
                     <button
                       onClick={async () => {
@@ -199,7 +201,7 @@ export function Navbar() {
                         setAuthModal(true, 'signin');
                         setMenuOpen(false);
                       }}
-                      className="w-full text-left px-4 py-2.5 font-bold text-neutral-900 dark:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+                      className="w-full text-left px-4 py-2.5 font-bold text-neutral-900 dark:text-[#E5C158] hover:bg-[#C5A059]/10 transition-colors"
                     >
                       Sign in
                     </button>
@@ -212,13 +214,13 @@ export function Navbar() {
                     >
                       Sign up
                     </button>
-                    <div className="border-t border-neutral-100 dark:border-neutral-800/80 my-1" />
+                    <div className="border-t border-neutral-100 dark:border-[#1E3557]/80 my-1" />
                     <Link
                       to="/host/create"
                       onClick={() => setMenuOpen(false)}
-                      className="block px-4 py-2.5 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+                      className="block px-4 py-2.5 text-neutral-700 dark:text-neutral-300 hover:bg-[#C5A059]/10 hover:text-[#C5A059] transition-colors"
                     >
-                      Skybnb your home
+                      List your home with Valpromark
                     </Link>
                   </>
                 )}

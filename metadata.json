@@ -1,6 +1,6 @@
 {
-  "name": "Skybnb",
-  "description": "Airbnb-inspired accommodation booking platform with search, filters, booking checkout, host listing creation, wishlist, and dark mode.",
+  "name": "Valpromark",
+  "description": "Valpromark — Premier Luxury Accommodations, Executive Stays & Property Management across Ghana by Essence Management Services Ltd.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

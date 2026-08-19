@@ -14,7 +14,7 @@ interface AppState {
 
 const getStoredTheme = (): ThemeMode => {
   if (typeof window === 'undefined') return 'system';
-  const saved = localStorage.getItem('skybnb-theme') as ThemeMode;
+  const saved = (localStorage.getItem('valpromark-theme') || localStorage.getItem('skybnb-theme')) as ThemeMode;
   return saved || 'system';
 };
 
@@ -29,10 +29,18 @@ const resolveIsDark = (theme: ThemeMode): boolean => {
 
 const applyDarkClass = (isDark: boolean) => {
   if (typeof document !== 'undefined') {
+    const root = document.documentElement;
+    const body = document.body;
     if (isDark) {
-      document.documentElement.classList.add('dark');
+      root.classList.add('dark');
+      body.classList.add('dark');
+      root.setAttribute('data-theme', 'dark');
+      root.style.colorScheme = 'dark';
     } else {
-      document.documentElement.classList.remove('dark');
+      root.classList.remove('dark');
+      body.classList.remove('dark');
+      root.setAttribute('data-theme', 'light');
+      root.style.colorScheme = 'light';
     }
   }
 };
@@ -43,7 +51,7 @@ export const useAppStore = create<AppState>((set, get) => ({
   viewMode: 'grid',
 
   setTheme: (theme: ThemeMode) => {
-    localStorage.setItem('skybnb-theme', theme);
+    localStorage.setItem('valpromark-theme', theme);
     const isDark = resolveIsDark(theme);
     applyDarkClass(isDark);
     set({ theme, isDark });

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { X, Sparkles, ShieldCheck, Mail, Lock, User as UserIcon } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useAuthStore } from '../store/useAuthStore';
+import { ValpromarkLogo } from './ValpromarkLogo';
 
 export function AuthModal() {
   const authModalOpen = useAuthStore((s) => s.authModalOpen);
@@ -48,49 +49,52 @@ export function AuthModal() {
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/70 backdrop-blur-sm">
         <motion.div
           initial={{ opacity: 0, scale: 0.95, y: 10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 10 }}
-          className="relative w-full max-w-md rounded-3xl bg-white dark:bg-[#1E1E1E] text-neutral-900 dark:text-neutral-100 shadow-2xl border border-neutral-200 dark:border-neutral-800 overflow-hidden"
+          className="relative w-full max-w-md rounded-3xl bg-white dark:bg-[#0F1E33] text-neutral-900 dark:text-neutral-100 shadow-2xl border border-neutral-200 dark:border-[#1E3557] overflow-hidden"
         >
           {/* Header */}
-          <div className="flex items-center justify-between px-6 py-4 border-b border-neutral-200 dark:border-neutral-800">
-            <h3 className="font-bold text-lg text-neutral-900 dark:text-neutral-100">
-              {mode === 'signin' ? 'Welcome back to Skybnb' : 'Create your Skybnb account'}
-            </h3>
+          <div className="flex items-center justify-between px-5 sm:px-6 py-4 border-b border-neutral-200 dark:border-[#1E3557]">
+            <div className="flex items-center gap-2">
+              <ValpromarkLogo size="sm" variant="icon" />
+              <h3 className="font-bold text-base sm:text-lg text-neutral-900 dark:text-neutral-100">
+                {mode === 'signin' ? 'Sign in to Valpromark' : 'Join Valpromark'}
+              </h3>
+            </div>
             <button
               onClick={() => setAuthModal(false)}
-              className="p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-500 transition-colors"
+              className="p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-[#0A1422] text-neutral-500 transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
           </div>
 
-          <div className="p-6 space-y-5">
+          <div className="p-5 sm:p-6 space-y-4 sm:space-y-5">
             {/* 1-Click Fast Demo Logins for smooth evaluation */}
-            <div className="p-4 rounded-2xl bg-sky-50 dark:bg-sky-950/40 border border-sky-200 dark:border-sky-800/60 space-y-2.5">
-              <div className="flex items-center gap-2 text-xs font-bold text-[#0EA5E9] uppercase tracking-wider">
-                <Sparkles className="w-4 h-4" />
-                <span>Instant 1-Click Test Logins</span>
+            <div className="p-3.5 sm:p-4 rounded-2xl bg-[#C5A059]/10 border border-[#C5A059]/30 space-y-2.5">
+              <div className="flex items-center gap-1.5 text-[11px] font-bold text-[#C5A059] uppercase tracking-wider">
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>Instant 1-Click Ghana Demo Accounts</span>
               </div>
               <div className="grid grid-cols-2 gap-2">
                 <button
                   type="button"
                   onClick={() => loginAsDemoUser('guest')}
-                  className="px-3 py-2 rounded-xl text-xs font-bold bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 text-neutral-800 dark:text-neutral-200 hover:border-[#0EA5E9] transition-all shadow-sm flex items-center justify-center gap-1.5"
+                  className="px-2.5 py-2 rounded-xl text-xs font-bold bg-white dark:bg-[#0A1422] border border-neutral-200 dark:border-[#1E3557] text-neutral-800 dark:text-neutral-200 hover:border-[#C5A059] transition-all shadow-sm flex items-center justify-center gap-1.5"
                 >
-                  <UserIcon className="w-3.5 h-3.5 text-[#0EA5E9]" />
-                  <span>Demo Guest</span>
+                  <UserIcon className="w-3.5 h-3.5 text-[#C5A059]" />
+                  <span>Kwame (Guest)</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => loginAsDemoUser('host')}
-                  className="px-3 py-2 rounded-xl text-xs font-bold bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 text-neutral-800 dark:text-neutral-200 hover:border-[#0EA5E9] transition-all shadow-sm flex items-center justify-center gap-1.5"
+                  className="px-2.5 py-2 rounded-xl text-xs font-bold bg-white dark:bg-[#0A1422] border border-neutral-200 dark:border-[#1E3557] text-neutral-800 dark:text-neutral-200 hover:border-[#C5A059] transition-all shadow-sm flex items-center justify-center gap-1.5"
                 >
-                  <ShieldCheck className="w-3.5 h-3.5 text-amber-500" />
-                  <span>Demo Superhost</span>
+                  <ShieldCheck className="w-3.5 h-3.5 text-[#C5A059]" />
+                  <span>Akosua (Host)</span>
                 </button>
               </div>
             </div>
@@ -103,7 +107,7 @@ export function AuthModal() {
             )}
 
             {/* Email form */}
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-3.5">
               {mode === 'signup' && (
                 <div>
                   <label className="block text-xs font-bold text-neutral-600 dark:text-neutral-400 mb-1.5">
@@ -114,10 +118,10 @@ export function AuthModal() {
                     <input
                       type="text"
                       required
-                      placeholder="e.g. Alex Rivera"
+                      placeholder="e.g. Kwame Mensah"
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white placeholder-neutral-400 text-sm focus:outline-none focus:ring-2 focus:ring-[#0EA5E9]"
+                      className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-neutral-300 dark:border-[#1E3557] bg-white dark:bg-[#0A1422] text-neutral-900 dark:text-white placeholder-neutral-400 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#C5A059]"
                     />
                   </div>
                 </div>
@@ -132,10 +136,10 @@ export function AuthModal() {
                   <input
                     type="email"
                     required
-                    placeholder="you@example.com"
+                    placeholder="name@example.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white placeholder-neutral-400 text-sm focus:outline-none focus:ring-2 focus:ring-[#0EA5E9]"
+                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-neutral-300 dark:border-[#1E3557] bg-white dark:bg-[#0A1422] text-neutral-900 dark:text-white placeholder-neutral-400 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#C5A059]"
                   />
                 </div>
               </div>
@@ -152,7 +156,7 @@ export function AuthModal() {
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white placeholder-neutral-400 text-sm focus:outline-none focus:ring-2 focus:ring-[#0EA5E9]"
+                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-neutral-300 dark:border-[#1E3557] bg-white dark:bg-[#0A1422] text-neutral-900 dark:text-white placeholder-neutral-400 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#C5A059]"
                   />
                 </div>
               </div>
@@ -160,13 +164,13 @@ export function AuthModal() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full py-3 rounded-xl font-bold text-sm bg-[#0EA5E9] hover:bg-sky-600 text-white shadow-md transition-transform active:scale-[0.98] disabled:opacity-50"
+                className="w-full py-3 rounded-xl font-bold text-xs sm:text-sm bg-gradient-to-r from-[#DFB24A] via-[#C5A059] to-[#DFB24A] text-[#0E1E38] shadow-md transition-transform active:scale-[0.98] disabled:opacity-50"
               >
                 {isLoading
                   ? 'Processing...'
                   : mode === 'signin'
-                  ? 'Sign In'
-                  : 'Create Account'}
+                  ? 'Sign In to Valpromark'
+                  : 'Create Valpromark Account'}
               </button>
             </form>
 
@@ -176,7 +180,7 @@ export function AuthModal() {
                   Don’t have an account?{' '}
                   <button
                     onClick={() => setMode('signup')}
-                    className="font-bold text-[#0EA5E9] hover:underline"
+                    className="font-bold text-[#C5A059] hover:underline"
                   >
                     Sign up
                   </button>
@@ -186,7 +190,7 @@ export function AuthModal() {
                   Already have an account?{' '}
                   <button
                     onClick={() => setMode('signin')}
-                    className="font-bold text-[#0EA5E9] hover:underline"
+                    className="font-bold text-[#C5A059] hover:underline"
                   >
                     Sign in
                   </button>
