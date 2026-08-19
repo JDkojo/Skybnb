@@ -1,0 +1,6 @@
+{
+  "name": "Skybnb",
+  "description": "Airbnb-inspired accommodation booking platform with search, filters, booking checkout, host listing creation, wishlist, and dark mode.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
