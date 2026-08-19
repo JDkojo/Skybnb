@@ -16,15 +16,15 @@ export function SearchBar() {
     <button
       id="search-bar-btn"
       onClick={() => setSearchModalOpen(true, 'location')}
-      className="flex items-center divide-x divide-neutral-200 dark:divide-[#1E3557] rounded-full border border-neutral-200 dark:border-[#1E3557] bg-white dark:bg-[#0F1E33] shadow-sm hover:shadow-md hover:border-[#C5A059]/60 transition-all duration-200 py-1.5 sm:py-2 px-2.5 sm:px-4 text-xs sm:text-sm font-semibold max-w-full text-left"
+      className="hidden sm:flex items-center divide-x divide-neutral-200 dark:divide-[#1E3557] rounded-full border border-neutral-200 dark:border-[#1E3557] bg-white dark:bg-[#0F1E33] shadow-sm hover:shadow-md hover:border-[#C5A059]/60 transition-all duration-200 py-1.5 sm:py-2 px-3 sm:px-4 text-xs sm:text-sm font-semibold max-w-full text-left"
     >
-      <span className="px-1.5 sm:px-2 text-neutral-900 dark:text-neutral-100 truncate max-w-[90px] sm:max-w-[130px] md:max-w-[160px]">
+      <span className="px-2 text-neutral-900 dark:text-neutral-100 truncate max-w-[120px] md:max-w-[160px]">
         {locationText}
       </span>
-      <span className="px-1.5 sm:px-2 text-neutral-600 dark:text-neutral-300 hidden xs:inline truncate text-xs">
+      <span className="px-2 text-neutral-600 dark:text-neutral-300 truncate text-xs">
         {datesText}
       </span>
-      <div className="pl-1.5 sm:pl-2 flex items-center gap-1.5 sm:gap-2">
+      <div className="pl-2 flex items-center gap-2">
         <span className="text-neutral-400 dark:text-neutral-400 font-normal hidden md:inline truncate text-xs">
           {guestsText}
         </span>
@@ -35,3 +35,4 @@ export function SearchBar() {
     </button>
   );
 }
+
