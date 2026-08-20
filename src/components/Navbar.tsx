@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
+  Menu,
   User as UserIcon,
   PlusCircle,
   Heart,
@@ -114,24 +115,25 @@ export function Navbar() {
           {/* Dark Mode Switcher */}
           <ThemeToggle />
 
-          {/* User Account Avatar Button (Clean avatar without hamburger lines) */}
+          {/* User Account Menu Button */}
           <div className="relative" ref={menuRef}>
             <button
               id="user-menu-btn"
               type="button"
               onClick={() => setMenuOpen(!menuOpen)}
-              className="p-1 rounded-full border border-neutral-200 dark:border-[#1E3557] bg-white dark:bg-[#0F1E33] hover:border-[#C5A059] hover:shadow-md transition-all duration-200 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-[#C5A059]/40 active:scale-95"
+              className="flex items-center gap-1.5 sm:gap-2 p-1 sm:p-1.5 pl-2 sm:pl-3 rounded-full border border-neutral-200 dark:border-[#1E3557] bg-white dark:bg-[#0F1E33] hover:border-[#C5A059] hover:shadow-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#C5A059]/40 active:scale-95"
               aria-label="User account menu"
             >
+              <Menu className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-neutral-600 dark:text-neutral-300 stroke-[2.2]" />
               {user?.avatar_url ? (
                 <img
                   src={user.avatar_url}
                   alt={user.full_name}
-                  className="w-7 h-7 sm:w-8 sm:h-8 rounded-full object-cover ring-1.5 ring-[#C5A059]"
+                  className="w-6 h-6 sm:w-7 sm:h-7 rounded-full object-cover ring-1.5 ring-[#C5A059]"
                 />
               ) : (
-                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-neutral-100 dark:bg-[#1E3557] flex items-center justify-center text-[#C5A059]">
-                  <UserIcon className="w-4 h-4" />
+                <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-neutral-100 dark:bg-[#1E3557] flex items-center justify-center text-[#C5A059]">
+                  <UserIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </div>
               )}
             </button>
