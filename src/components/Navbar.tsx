@@ -13,6 +13,7 @@ import {
   ShieldCheck,
   Building2,
   Search,
+  MessageSquare,
 } from 'lucide-react';
 import { ValpromarkLogo } from './ValpromarkLogo';
 import { SearchBar } from './SearchBar';
@@ -84,13 +85,13 @@ export function Navbar() {
             <Search className="w-4 h-4 text-[#C5A059] stroke-[2.5]" />
           </button>
 
-          {/* Host link */}
+          {/* List Property Link */}
           <Link
             to="/host/create"
             className="hidden md:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-bold text-neutral-800 dark:text-[#E5C158] hover:bg-[#C5A059]/10 transition-colors border border-transparent hover:border-[#C5A059]/30"
           >
             <PlusCircle className="w-4 h-4 text-[#C5A059]" />
-            <span>List with Valpromark</span>
+            <span>List Property Free</span>
           </Link>
 
           {/* Grid / Map Toggle Button */}
@@ -161,16 +162,16 @@ export function Navbar() {
                       className="flex items-center gap-2.5 px-4 py-2.5 text-neutral-700 dark:text-neutral-200 hover:bg-[#C5A059]/10 hover:text-[#C5A059] transition-colors"
                     >
                       <Heart className="w-4 h-4 text-[#C5A059]" />
-                      <span>Saved Wishlists</span>
+                      <span>Saved Properties</span>
                     </Link>
 
                     <Link
-                      to="/profile?tab=trips"
+                      to="/profile?tab=inquiries"
                       onClick={() => setMenuOpen(false)}
                       className="flex items-center gap-2.5 px-4 py-2.5 text-neutral-700 dark:text-neutral-200 hover:bg-[#C5A059]/10 hover:text-[#C5A059] transition-colors"
                     >
-                      <CalendarDays className="w-4 h-4 text-[#C5A059]" />
-                      <span>My Ghana Trips</span>
+                      <MessageSquare className="w-4 h-4 text-[#C5A059]" />
+                      <span>Inquiries & Site Tours</span>
                     </Link>
 
                     <Link
@@ -179,7 +180,7 @@ export function Navbar() {
                       className="flex items-center gap-2.5 px-4 py-2.5 text-neutral-700 dark:text-neutral-200 hover:bg-[#C5A059]/10 hover:text-[#C5A059] transition-colors"
                     >
                       <Building2 className="w-4 h-4 text-[#C5A059]" />
-                      <span>Host Property Hub</span>
+                      <span>Owner Dashboard</span>
                     </Link>
 
                     <Link
@@ -188,7 +189,7 @@ export function Navbar() {
                       className="flex items-center gap-2.5 px-4 py-2.5 text-neutral-700 dark:text-neutral-200 hover:bg-[#C5A059]/10 hover:text-[#C5A059] transition-colors"
                     >
                       <PlusCircle className="w-4 h-4 text-[#C5A059]" />
-                      <span>List a Property in Ghana</span>
+                      <span>List Property for Free</span>
                     </Link>
 
                     <Link
@@ -197,7 +198,7 @@ export function Navbar() {
                       className="flex items-center gap-2.5 px-4 py-2.5 text-neutral-700 dark:text-neutral-200 hover:bg-[#C5A059]/10 hover:text-[#C5A059] transition-colors"
                     >
                       <UserIcon className="w-4 h-4 text-[#C5A059]" />
-                      <span>Account Settings</span>
+                      <span>Account Profile</span>
                     </Link>
 
                     <div className="border-t border-neutral-100 dark:border-[#1E3557]/80 my-1" />
@@ -240,7 +241,7 @@ export function Navbar() {
                       onClick={() => setMenuOpen(false)}
                       className="block px-4 py-2.5 text-neutral-700 dark:text-neutral-300 hover:bg-[#C5A059]/10 hover:text-[#C5A059] transition-colors"
                     >
-                      List your home with Valpromark
+                      List your property for free
                     </Link>
                   </>
                 )}

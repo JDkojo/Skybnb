@@ -1,6 +1,6 @@
 {
   "name": "Valpromark",
-  "description": "Valpromark — Premier Luxury Accommodations, Executive Stays & Property Management across Ghana by Essence Management Services Ltd.",
+  "description": "Valpromark — Ghana's premier real estate & property classifieds platform to freely list and find houses, lands, student hostels, hotels, and commercial properties with direct owner WhatsApp and phone contact.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

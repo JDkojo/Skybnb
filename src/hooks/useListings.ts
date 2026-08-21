@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { Listing, SearchFilters } from '../types';
+import { Listing, SearchFilters, PropertyInquiry } from '../types';
 import { SEED_LISTINGS } from '../data/seedListings';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
 
@@ -7,7 +7,7 @@ import { supabase, isSupabaseConfigured } from '../lib/supabase';
 export const getCustomListings = (): Listing[] => {
   if (typeof window === 'undefined') return [];
   try {
-    const raw = localStorage.getItem('skybnb-custom-listings');
+    const raw = localStorage.getItem('valpromark-custom-listings');
     return raw ? JSON.parse(raw) : [];
   } catch {
     return [];
@@ -17,7 +17,36 @@ export const getCustomListings = (): Listing[] => {
 export const saveCustomListing = (listing: Listing) => {
   const current = getCustomListings();
   const updated = [listing, ...current];
-  localStorage.setItem('skybnb-custom-listings', JSON.stringify(updated));
+  localStorage.setItem('valpromark-custom-listings', JSON.stringify(updated));
+};
+
+export const updateCustomListing = (listingId: string, updates: Partial<Listing>) => {
+  const current = getCustomListings();
+  const updated = current.map((l) => (l.id === listingId ? { ...l, ...updates } : l));
+  localStorage.setItem('valpromark-custom-listings', JSON.stringify(updated));
+};
+
+export const deleteCustomListing = (listingId: string) => {
+  const current = getCustomListings();
+  const updated = current.filter((l) => l.id !== listingId);
+  localStorage.setItem('valpromark-custom-listings', JSON.stringify(updated));
+};
+
+// Inquiries storage
+export const getPropertyInquiries = (): PropertyInquiry[] => {
+  if (typeof window === 'undefined') return [];
+  try {
+    const raw = localStorage.getItem('valpromark-property-inquiries');
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+};
+
+export const savePropertyInquiry = (inquiry: PropertyInquiry) => {
+  const current = getPropertyInquiries();
+  const updated = [inquiry, ...current];
+  localStorage.setItem('valpromark-property-inquiries', JSON.stringify(updated));
 };
 
 export function useListings(filters?: SearchFilters) {
@@ -44,33 +73,53 @@ export function useListings(filters?: SearchFilters) {
 
       // Apply client-side filters
       if (filters) {
-        if (filters.category && filters.category !== 'all') {
+        // Filter by purpose (sale, rent, hostel, short_stay)
+        if (filters.purpose && filters.purpose !== 'all') {
           listings = listings.filter(
-            (l) => l.category.toLowerCase() === filters.category?.toLowerCase()
+            (l) => l.purpose?.toLowerCase() === filters.purpose?.toLowerCase()
           );
         }
 
+        // Filter by category (house, apartment, land, hostel, hotel, commercial)
+        if (filters.category && filters.category !== 'all') {
+          listings = listings.filter(
+            (l) => l.category?.toLowerCase() === filters.category?.toLowerCase()
+          );
+        }
+
+        // Filter by location/keyword
         if (filters.location && filters.location.trim() !== '') {
           const q = filters.location.toLowerCase().trim();
           listings = listings.filter(
             (l) =>
-              l.location.toLowerCase().includes(q) ||
-              l.city.toLowerCase().includes(q) ||
-              l.country.toLowerCase().includes(q) ||
-              l.title.toLowerCase().includes(q)
+              l.location?.toLowerCase().includes(q) ||
+              l.city?.toLowerCase().includes(q) ||
+              l.region?.toLowerCase().includes(q) ||
+              l.country?.toLowerCase().includes(q) ||
+              l.title?.toLowerCase().includes(q) ||
+              l.type?.toLowerCase().includes(q) ||
+              l.description?.toLowerCase().includes(q)
           );
         }
 
-        if (filters.guests && filters.guests > 1) {
-          listings = listings.filter((l) => l.max_guests >= filters.guests);
+        if (filters.bedrooms && filters.bedrooms > 0) {
+          listings = listings.filter((l) => l.bedrooms >= filters.bedrooms!);
+        }
+
+        if (filters.bathrooms && filters.bathrooms > 0) {
+          listings = listings.filter((l) => l.bathrooms >= filters.bathrooms!);
         }
 
         if (filters.minPrice !== undefined) {
-          listings = listings.filter((l) => l.price_per_night >= filters.minPrice!);
+          listings = listings.filter(
+            (l) => (l.price || l.price_per_night || 0) >= filters.minPrice!
+          );
         }
 
         if (filters.maxPrice !== undefined) {
-          listings = listings.filter((l) => l.price_per_night <= filters.maxPrice!);
+          listings = listings.filter(
+            (l) => (l.price || l.price_per_night || 0) <= filters.maxPrice!
+          );
         }
 
         if (filters.propertyType && filters.propertyType !== '') {
@@ -81,7 +130,7 @@ export function useListings(filters?: SearchFilters) {
 
         if (filters.amenities && filters.amenities.length > 0) {
           listings = listings.filter((l) =>
-            filters.amenities.every((a) => l.amenities.includes(a))
+            filters.amenities.every((a) => l.amenities?.includes(a))
           );
         }
       }

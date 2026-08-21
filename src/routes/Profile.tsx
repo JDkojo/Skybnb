@@ -1,28 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import {
   User as UserIcon,
-  CalendarDays,
-  Sparkles,
-  ShieldCheck,
-  LogOut,
-  Moon,
-  Sun,
-  Database,
   Building2,
   MapPin,
   CheckCircle2,
   PlusCircle,
   Key,
+  LogOut,
+  Moon,
+  Sun,
+  MessageSquare,
+  Phone,
+  Eye,
+  BadgeCheck,
+  Heart,
+  ShieldAlert,
+  FileCheck,
+  Compass,
+  Check,
 } from 'lucide-react';
 import { useAuthStore } from '../store/useAuthStore';
 import { useAppStore } from '../store/useAppStore';
-import { useBookings } from '../hooks/useBookings';
-import { isSupabaseConfigured } from '../lib/supabase';
+import { useListings, getPropertyInquiries } from '../hooks/useListings';
+import { useWishlist } from '../hooks/useWishlist';
 
 export default function Profile() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const activeTab = searchParams.get('tab') || 'trips';
+  const activeTab = searchParams.get('tab') || 'listings';
 
   const user = useAuthStore((s) => s.user);
   const signOut = useAuthStore((s) => s.signOut);
@@ -32,10 +37,23 @@ export default function Profile() {
   const isDark = useAppStore((s) => s.isDark);
   const toggleTheme = useAppStore((s) => s.toggleTheme);
 
-  const { bookings, cancelBooking } = useBookings();
+  const { data: allListings = [] } = useListings();
+  const { wishlistIds } = useWishlist();
+  const savedProperties = allListings.filter((l) => wishlistIds.includes(l.id));
+  const myListings = allListings.filter(
+    (l) => l.host_id === user?.id || l.id.startsWith('listing-')
+  );
+  const inquiries = getPropertyInquiries();
+
+  // Local state for listing availability toggles
+  const [listingStatuses, setListingStatuses] = useState<Record<string, string>>({});
 
   const setTab = (tab: string) => {
     setSearchParams({ tab });
+  };
+
+  const handleStatusChange = (listingId: string, status: string) => {
+    setListingStatuses((prev) => ({ ...prev, [listingId]: status }));
   };
 
   if (!user) {
@@ -46,20 +64,20 @@ export default function Profile() {
         </div>
         <h2 className="text-xl font-bold text-neutral-900 dark:text-white">Sign in to Valpromark</h2>
         <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400">
-          Sign in to view your confirmed Ghana reservations, manage saved properties, or list accommodation.
+          Sign in to list properties across Ghana freely, manage direct inquiries, or view your saved properties.
         </p>
         <button
           onClick={() => setAuthModal(true, 'signin')}
           className="w-full py-3 rounded-full font-bold text-sm bg-[#C5A059] text-[#0E1E38] hover:bg-[#DFB24A] shadow-md"
         >
-          Sign In / Sign Up
+          Sign In / Register Free
         </button>
       </div>
     );
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-8 pb-28 min-h-screen">
+    <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 py-6 sm:py-8 pb-28 min-h-screen">
       {/* Profile Header Card */}
       <div className="p-5 sm:p-8 rounded-3xl border border-neutral-200 dark:border-[#1E3557] bg-white dark:bg-[#0F1E33] shadow-sm mb-6 sm:mb-8">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
@@ -76,11 +94,9 @@ export default function Profile() {
                   {user.full_name[0]}
                 </div>
               )}
-              {user.is_host && (
-                <div className="absolute -bottom-1 -right-1 p-1.5 rounded-full bg-[#C5A059] text-[#0E1E38] shadow-md">
-                  <ShieldCheck className="w-4 h-4" />
-                </div>
-              )}
+              <div className="absolute -bottom-1 -right-1 p-1.5 rounded-full bg-emerald-500 text-white shadow-md">
+                <BadgeCheck className="w-3.5 h-3.5" />
+              </div>
             </div>
 
             <div>
@@ -88,24 +104,22 @@ export default function Profile() {
                 <h1 className="text-xl sm:text-2xl font-black text-neutral-900 dark:text-white">
                   {user.full_name}
                 </h1>
-                {user.is_host && (
-                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-[#C5A059]/20 text-[#C5A059]">
-                    Host
-                  </span>
-                )}
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-[#C5A059]/20 text-[#C5A059]">
+                  Property Owner & Seeker Hub
+                </span>
               </div>
               <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 mt-0.5">{user.email}</p>
-              <p className="text-[11px] text-neutral-400 mt-1">Valpromark Member since {user.joined_date || '2024'}</p>
+              <p className="text-[11px] text-neutral-400 mt-1">Valpromark Direct Real Estate Network · Ghana</p>
             </div>
           </div>
 
           <div className="flex flex-wrap items-center gap-2.5">
             <Link
               to="/host/create"
-              className="px-4 py-2 rounded-full font-bold text-xs bg-[#C5A059] text-[#0E1E38] hover:bg-[#DFB24A] transition-colors shadow-sm flex items-center gap-1.5"
+              className="px-4 py-2 rounded-full font-bold text-xs bg-gradient-to-r from-[#DFB24A] via-[#C5A059] to-[#DFB24A] text-[#0E1E38] hover:scale-105 transition-transform shadow-sm flex items-center gap-1.5"
             >
               <PlusCircle className="w-3.5 h-3.5" />
-              <span>List your Ghana home</span>
+              <span>List Property Free</span>
             </Link>
             <button
               onClick={() => signOut()}
@@ -121,27 +135,51 @@ export default function Profile() {
       {/* Tabs Navigation */}
       <div className="flex items-center gap-2 border-b border-neutral-200 dark:border-[#1E3557] pb-3 mb-6 overflow-x-auto no-scrollbar">
         <button
-          onClick={() => setTab('trips')}
+          onClick={() => setTab('listings')}
           className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-colors whitespace-nowrap ${
-            activeTab === 'trips'
-              ? 'bg-[#C5A059] text-[#0E1E38]'
-              : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white'
-          }`}
-        >
-          <CalendarDays className="w-4 h-4" />
-          <span>My Trips ({bookings.length})</span>
-        </button>
-
-        <button
-          onClick={() => setTab('host')}
-          className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-colors whitespace-nowrap ${
-            activeTab === 'host'
+            activeTab === 'listings'
               ? 'bg-[#C5A059] text-[#0E1E38]'
               : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white'
           }`}
         >
           <Building2 className="w-4 h-4" />
-          <span>Host Portal</span>
+          <span>My Listed Properties ({myListings.length})</span>
+        </button>
+
+        <button
+          onClick={() => setTab('inquiries')}
+          className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-colors whitespace-nowrap ${
+            activeTab === 'inquiries'
+              ? 'bg-[#C5A059] text-[#0E1E38]'
+              : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white'
+          }`}
+        >
+          <MessageSquare className="w-4 h-4" />
+          <span>Inquiries & Tours ({inquiries.length})</span>
+        </button>
+
+        <button
+          onClick={() => setTab('saved')}
+          className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-colors whitespace-nowrap ${
+            activeTab === 'saved'
+              ? 'bg-[#C5A059] text-[#0E1E38]'
+              : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white'
+          }`}
+        >
+          <Heart className="w-4 h-4" />
+          <span>Saved Properties ({savedProperties.length})</span>
+        </button>
+
+        <button
+          onClick={() => setTab('guide')}
+          className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-colors whitespace-nowrap ${
+            activeTab === 'guide'
+              ? 'bg-[#C5A059] text-[#0E1E38]'
+              : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white'
+          }`}
+        >
+          <FileCheck className="w-4 h-4" />
+          <span>Ghana Due Diligence Guide</span>
         </button>
 
         <button
@@ -152,98 +190,169 @@ export default function Profile() {
               : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white'
           }`}
         >
-          <Sparkles className="w-4 h-4" />
-          <span>Settings & Personas</span>
+          <Key className="w-4 h-4" />
+          <span>Settings</span>
         </button>
       </div>
 
-      {/* TAB 1: Trips / Bookings */}
-      {activeTab === 'trips' && (
+      {/* TAB 1: My Listed Properties */}
+      {activeTab === 'listings' && (
         <div className="space-y-6">
-          {bookings.length === 0 ? (
-            <div className="max-w-md mx-auto my-12 p-8 text-center bg-white dark:bg-[#0F1E33] rounded-3xl border border-neutral-200 dark:border-[#1E3557] space-y-4">
-              <CalendarDays className="w-12 h-12 text-[#C5A059] mx-auto" />
-              <h3 className="text-lg font-bold text-neutral-900 dark:text-white">No trips booked yet</h3>
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-base font-bold text-neutral-900 dark:text-white">Properties You Have Listed</h2>
               <p className="text-xs text-neutral-500 dark:text-neutral-400">
-                Explore luxury penthouses, ocean retreats, and hilltop villas across Ghana.
+                Manage your listings, update availability status, and review details.
               </p>
+            </div>
+            <Link
+              to="/host/create"
+              className="text-xs font-bold text-[#C5A059] hover:underline flex items-center gap-1"
+            >
+              <PlusCircle className="w-3.5 h-3.5" />
+              <span>Add New Listing</span>
+            </Link>
+          </div>
+
+          {myListings.length === 0 ? (
+            <div className="p-8 text-center bg-white dark:bg-[#0F1E33] rounded-3xl border border-neutral-200 dark:border-[#1E3557] space-y-3">
+              <Building2 className="w-10 h-10 text-[#C5A059] mx-auto" />
+              <p className="text-sm font-bold text-neutral-900 dark:text-white">No properties listed yet</p>
+              <p className="text-xs text-neutral-400">List your land, house, student hostel, or commercial space for free.</p>
               <Link
-                to="/"
-                className="inline-block px-6 py-2.5 rounded-full font-bold text-xs bg-[#C5A059] text-[#0E1E38]"
+                to="/host/create"
+                className="inline-block px-5 py-2 rounded-full bg-[#C5A059] text-[#0E1E38] font-bold text-xs"
               >
-                Start Searching Ghana Stays
+                List Property Now
               </Link>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
-              {bookings.map((booking) => (
-                <div
-                  key={booking.id}
-                  className="p-5 rounded-3xl border border-neutral-200 dark:border-[#1E3557] bg-white dark:bg-[#0F1E33] shadow-sm flex flex-col justify-between"
-                >
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-mono font-bold text-[#C5A059]">
-                        VALPRO-GH-{booking.id.slice(-6).toUpperCase()}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {myListings.map((l) => {
+                const currentStatus = listingStatuses[l.id] || 'Available';
+                return (
+                  <div
+                    key={l.id}
+                    className="p-4 rounded-3xl border border-neutral-200 dark:border-[#1E3557] bg-white dark:bg-[#0F1E33] space-y-3"
+                  >
+                    <div className="aspect-[16/9] rounded-2xl overflow-hidden relative">
+                      <img src={l.photos[0]} alt={l.title} className="w-full h-full object-cover" />
+                      <span className="absolute top-2 left-2 px-2 py-0.5 rounded text-[9px] font-black uppercase bg-[#0E1E38] text-[#E5C158]">
+                        {l.purpose || 'sale'}
                       </span>
                       <span
-                        className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase ${
-                          booking.status === 'confirmed'
-                            ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300'
-                            : 'bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-300'
+                        className={`absolute top-2 right-2 px-2 py-0.5 rounded text-[9px] font-black uppercase ${
+                          currentStatus === 'Available'
+                            ? 'bg-emerald-600 text-white'
+                            : currentStatus === 'Under Negotiation'
+                            ? 'bg-amber-500 text-neutral-950'
+                            : 'bg-rose-600 text-white'
                         }`}
                       >
-                        {booking.status}
+                        {currentStatus}
                       </span>
                     </div>
+                    <div>
+                      <h3 className="font-bold text-sm text-neutral-900 dark:text-white truncate">{l.title}</h3>
+                      <p className="text-xs text-neutral-500 dark:text-neutral-400 truncate">{l.location}</p>
+                      <p className="text-sm font-black text-[#C5A059] mt-1">
+                        GH₵ {(l.price || l.price_per_night || 0).toLocaleString()}
+                      </p>
+                    </div>
 
-                    <div className="flex gap-4 items-center">
-                      <img
-                        src={booking.listing_photo}
-                        alt={booking.listing_title}
-                        className="w-20 h-20 rounded-2xl object-cover shrink-0"
-                      />
-                      <div className="min-w-0 flex-1">
-                        <h4 className="font-bold text-sm text-neutral-900 dark:text-white truncate">
-                          {booking.listing_title}
-                        </h4>
-                        <p className="text-xs text-neutral-500 dark:text-neutral-400 truncate mt-0.5 flex items-center gap-1">
-                          <MapPin className="w-3 h-3 text-[#C5A059]" />
-                          {booking.listing_location}
-                        </p>
-                        <p className="text-xs text-neutral-700 dark:text-neutral-300 font-semibold mt-1">
-                          {booking.check_in} → {booking.check_out} ({booking.nights} nights)
-                        </p>
+                    {/* Status Switcher for Landlord / Owner */}
+                    <div className="pt-2 border-t border-neutral-100 dark:border-[#1E3557]/80">
+                      <label className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block mb-1">
+                        Listing Status:
+                      </label>
+                      <div className="grid grid-cols-3 gap-1">
+                        {['Available', 'Under Negotiation', 'Sold/Rented'].map((st) => (
+                          <button
+                            key={st}
+                            type="button"
+                            onClick={() => handleStatusChange(l.id, st)}
+                            className={`py-1 px-1.5 rounded-lg text-[10px] font-bold transition-all ${
+                              currentStatus === st
+                                ? 'bg-[#C5A059] text-[#0E1E38]'
+                                : 'bg-neutral-100 dark:bg-[#1E3557]/50 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-200'
+                            }`}
+                          >
+                            {st}
+                          </button>
+                        ))}
                       </div>
                     </div>
 
-                    <div className="pt-3 border-t border-neutral-100 dark:border-[#1E3557]/80 flex items-center justify-between text-xs">
-                      <div>
-                        <span className="text-neutral-400">Total: </span>
-                        <span className="font-bold text-sm text-[#C5A059]">
-                          GH₵ {booking.total_price.toLocaleString()}
-                        </span>
-                      </div>
-                      <span className="text-neutral-500">{booking.guests_count} guests</span>
-                    </div>
+                    <Link
+                      to={`/listing/${l.id}`}
+                      className="w-full py-2 rounded-xl text-center text-xs font-bold bg-[#0A1422] text-[#C5A059] border border-[#1E3557] block hover:bg-[#0E1E38]"
+                    >
+                      View Public Ad
+                    </Link>
                   </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      )}
 
-                  {booking.status === 'confirmed' && (
-                    <div className="mt-4 pt-3 border-t border-neutral-100 dark:border-[#1E3557]/80 flex items-center justify-between">
-                      <Link
-                        to={`/listing/${booking.listing_id}`}
-                        className="text-xs font-bold text-[#C5A059] hover:underline"
-                      >
-                        View Stay Details
-                      </Link>
-                      <button
-                        onClick={() => cancelBooking(booking.id)}
-                        className="text-xs font-semibold text-rose-500 hover:text-rose-700 transition-colors"
-                      >
-                        Cancel Reservation
-                      </button>
+      {/* TAB 2: Inquiries */}
+      {activeTab === 'inquiries' && (
+        <div className="p-5 sm:p-6 rounded-3xl border border-neutral-200 dark:border-[#1E3557] bg-white dark:bg-[#0F1E33]">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h2 className="text-base font-bold text-neutral-900 dark:text-white">Direct Inquiries & Tour Requests</h2>
+              <p className="text-xs text-neutral-500 dark:text-neutral-400">
+                Prospective buyers and tenants who submitted inspection or offer requests.
+              </p>
+            </div>
+          </div>
+
+          {inquiries.length === 0 ? (
+            <div className="p-8 text-center bg-neutral-50 dark:bg-[#0A1422]/60 rounded-2xl">
+              <MessageSquare className="w-8 h-8 text-neutral-400 mx-auto mb-2" />
+              <p className="text-xs text-neutral-400 italic">No inquiries received yet.</p>
+            </div>
+          ) : (
+            <div className="divide-y divide-neutral-100 dark:divide-[#1E3557]/80">
+              {inquiries.map((inq) => (
+                <div key={inq.id} className="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <strong className="text-xs font-bold text-neutral-900 dark:text-white">{inq.sender_name}</strong>
+                      <span className="text-[10px] text-neutral-400">· {inq.sender_phone}</span>
+                      {inq.preferred_tour_date && (
+                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/10 text-amber-500 border border-amber-500/20">
+                          Tour: {inq.preferred_tour_date}
+                        </span>
+                      )}
                     </div>
-                  )}
+                    <p className="text-xs text-neutral-600 dark:text-neutral-300">
+                      Property: <strong className="text-[#C5A059]">{inq.listing_title}</strong>
+                    </p>
+                    <p className="text-xs text-neutral-500 dark:text-neutral-400 italic bg-neutral-50 dark:bg-[#0A1422]/80 p-2 rounded-xl border border-neutral-100 dark:border-[#1E3557]/60">
+                      "{inq.message}"
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2 self-start sm:self-auto shrink-0">
+                    <a
+                      href={`https://wa.me/${inq.sender_phone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`Hello ${inq.sender_name}, thank you for inquiring about ${inq.listing_title} on Valpromark Ghana.`)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm"
+                    >
+                      <MessageSquare className="w-3.5 h-3.5" />
+                      <span>WhatsApp Reply</span>
+                    </a>
+                    <a
+                      href={`tel:${inq.sender_phone}`}
+                      className="p-2 rounded-xl border border-neutral-200 dark:border-[#1E3557] text-neutral-700 dark:text-neutral-300 hover:text-[#C5A059]"
+                      title="Call directly"
+                    >
+                      <Phone className="w-3.5 h-3.5" />
+                    </a>
+                  </div>
                 </div>
               ))}
             </div>
@@ -251,80 +360,145 @@ export default function Profile() {
         </div>
       )}
 
-      {/* TAB 2: Host Portal */}
-      {activeTab === 'host' && (
-        <div className="space-y-6">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="p-5 rounded-2xl border border-neutral-200 dark:border-[#1E3557] bg-white dark:bg-[#0F1E33]">
-              <span className="text-xs text-neutral-400 font-bold uppercase">Superhost Rating</span>
-              <p className="text-2xl font-black text-neutral-900 dark:text-white mt-1">4.98 ★</p>
-              <p className="text-xs text-emerald-600 mt-1 font-semibold">Top host in Accra</p>
+      {/* TAB 3: Saved Properties */}
+      {activeTab === 'saved' && (
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-base font-bold text-neutral-900 dark:text-white">Saved Properties ({savedProperties.length})</h2>
+            <Link to="/" className="text-xs font-bold text-[#C5A059] hover:underline flex items-center gap-1">
+              <Compass className="w-3.5 h-3.5" />
+              <span>Explore More Properties</span>
+            </Link>
+          </div>
+
+          {savedProperties.length === 0 ? (
+            <div className="p-8 text-center bg-white dark:bg-[#0F1E33] rounded-3xl border border-neutral-200 dark:border-[#1E3557] space-y-3">
+              <Heart className="w-10 h-10 text-neutral-400 mx-auto" />
+              <p className="text-sm font-bold text-neutral-900 dark:text-white">No saved properties yet</p>
+              <p className="text-xs text-neutral-400">Tap the heart icon on any listing to bookmark it here for quick access.</p>
+              <Link
+                to="/"
+                className="inline-block px-5 py-2 rounded-full bg-[#C5A059] text-[#0E1E38] font-bold text-xs"
+              >
+                Browse Listings
+              </Link>
             </div>
-            <div className="p-5 rounded-2xl border border-neutral-200 dark:border-[#1E3557] bg-white dark:bg-[#0F1E33]">
-              <span className="text-xs text-neutral-400 font-bold uppercase">Total Bookings</span>
-              <p className="text-2xl font-black text-neutral-900 dark:text-white mt-1">28</p>
-              <p className="text-xs text-neutral-500 mt-1">100% response rate</p>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+              {savedProperties.map((p) => (
+                <Link
+                  key={p.id}
+                  to={`/listing/${p.id}`}
+                  className="p-3.5 rounded-3xl border border-neutral-200 dark:border-[#1E3557] bg-white dark:bg-[#0F1E33] hover:shadow-md transition-shadow block group"
+                >
+                  <div className="aspect-[16/10] rounded-2xl overflow-hidden mb-2 relative">
+                    <img src={p.photos[0]} alt={p.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                    <span className="absolute top-2 left-2 px-2 py-0.5 rounded text-[9px] font-black uppercase bg-[#0E1E38] text-[#E5C158]">
+                      {p.category}
+                    </span>
+                  </div>
+                  <h4 className="font-bold text-xs sm:text-sm text-neutral-900 dark:text-white truncate">{p.title}</h4>
+                  <p className="text-[11px] text-neutral-400 truncate">{p.location}</p>
+                  <p className="text-xs font-black text-[#C5A059] mt-1">GH₵ {(p.price || p.price_per_night || 0).toLocaleString()}</p>
+                </Link>
+              ))}
             </div>
-            <div className="p-5 rounded-2xl border border-neutral-200 dark:border-[#1E3557] bg-white dark:bg-[#0F1E33]">
-              <span className="text-xs text-neutral-400 font-bold uppercase">Ghana Cedis Earnings</span>
-              <p className="text-2xl font-black text-[#C5A059] mt-1">GH₵ 78,500</p>
-              <p className="text-xs text-neutral-500 mt-1">Payout via MTN MoMo / Wire</p>
+          )}
+        </div>
+      )}
+
+      {/* TAB 4: Ghana Real Estate Due Diligence Guide */}
+      {activeTab === 'guide' && (
+        <div className="p-5 sm:p-7 rounded-3xl border border-neutral-200 dark:border-[#1E3557] bg-white dark:bg-[#0F1E33] space-y-6">
+          <div className="flex items-center gap-3 border-b border-neutral-200 dark:border-[#1E3557] pb-4">
+            <div className="p-3 rounded-2xl bg-[#C5A059]/10 text-[#C5A059]">
+              <ShieldAlert className="w-6 h-6" />
+            </div>
+            <div>
+              <h2 className="text-base sm:text-lg font-bold text-neutral-900 dark:text-white">
+                Ghana Property & Land Due Diligence Checklist
+              </h2>
+              <p className="text-xs text-neutral-500 dark:text-neutral-400">
+                Essential steps to safeguard your property purchase or rental in Ghana.
+              </p>
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-4">
-            <Link
-              to="/host/my-listings"
-              className="px-6 py-3 rounded-full font-bold text-xs sm:text-sm bg-[#0E1E38] dark:bg-[#C5A059] text-white dark:text-[#0E1E38] hover:opacity-90"
-            >
-              Manage My Listings
-            </Link>
-            <Link
-              to="/host/create"
-              className="px-6 py-3 rounded-full font-bold text-xs sm:text-sm bg-gradient-to-r from-[#DFB24A] via-[#C5A059] to-[#DFB24A] text-[#0E1E38] shadow-md"
-            >
-              Add New Ghana Listing
-            </Link>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="p-4 rounded-2xl bg-neutral-50 dark:bg-[#0A1422]/60 border border-neutral-200 dark:border-[#1E3557] space-y-2">
+              <h4 className="text-xs font-bold text-neutral-900 dark:text-white flex items-center gap-1.5">
+                <Check className="w-4 h-4 text-[#C5A059]" />
+                <span>1. Physical Site Inspection</span>
+              </h4>
+              <p className="text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed">
+                Always visit the land or building in person with a licensed surveyor. Inspect boundaries and confirm no ongoing chieftaincy or family disputes on site.
+              </p>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-neutral-50 dark:bg-[#0A1422]/60 border border-neutral-200 dark:border-[#1E3557] space-y-2">
+              <h4 className="text-xs font-bold text-neutral-900 dark:text-white flex items-center gap-1.5">
+                <Check className="w-4 h-4 text-[#C5A059]" />
+                <span>2. Search at Lands Commission</span>
+              </h4>
+              <p className="text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed">
+                Conduct an official official search at the Lands Commission (Public and Vested Lands Management Division or Land Registration Division) using the site plan.
+              </p>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-neutral-50 dark:bg-[#0A1422]/60 border border-neutral-200 dark:border-[#1E3557] space-y-2">
+              <h4 className="text-xs font-bold text-neutral-900 dark:text-white flex items-center gap-1.5">
+                <Check className="w-4 h-4 text-[#C5A059]" />
+                <span>3. Title & Indenture Verification</span>
+              </h4>
+              <p className="text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed">
+                Verify the grantor's capacity to sell or lease. For stool/skin land, ensure the principal elders and chief have consented.
+              </p>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-neutral-50 dark:bg-[#0A1422]/60 border border-neutral-200 dark:border-[#1E3557] space-y-2">
+              <h4 className="text-xs font-bold text-neutral-900 dark:text-white flex items-center gap-1.5">
+                <Check className="w-4 h-4 text-[#C5A059]" />
+                <span>4. Safe Direct Payment Terms</span>
+              </h4>
+              <p className="text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed">
+                Never send mobile money deposits or cash before physically inspecting the property and reviewing original ownership documentation with legal counsel.
+              </p>
+            </div>
           </div>
         </div>
       )}
 
-      {/* TAB 3: Settings & Personas */}
+      {/* TAB 5: Settings & Switchers */}
       {activeTab === 'settings' && (
         <div className="max-w-2xl space-y-6">
-          {/* Quick Demo Switcher */}
           <div className="p-5 sm:p-6 rounded-3xl border border-neutral-200 dark:border-[#1E3557] bg-white dark:bg-[#0F1E33] space-y-4">
             <h3 className="font-bold text-sm sm:text-base text-neutral-900 dark:text-white flex items-center gap-2">
               <Key className="w-4 h-4 text-[#C5A059]" />
-              <span>Switch Demo Persona for Instant Testing</span>
+              <span>Switch Profile Persona for Testing</span>
             </h3>
-            <p className="text-xs text-neutral-500 dark:text-neutral-400">
-              Quickly switch between guest and host profiles to explore Ghana accommodation management.
-            </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <button
                 onClick={() => loginAsDemoUser('guest')}
-                className="p-4 rounded-2xl border border-neutral-200 dark:border-[#1E3557] hover:border-[#C5A059] text-left transition-colors bg-neutral-50 dark:bg-[#0A1422]/60"
+                className="p-3.5 rounded-2xl border border-neutral-200 dark:border-[#1E3557] hover:border-[#C5A059] text-left transition-colors bg-neutral-50 dark:bg-[#0A1422]/60"
               >
-                <p className="font-bold text-xs sm:text-sm text-neutral-900 dark:text-white">Kwame Mensah (Guest)</p>
-                <p className="text-[11px] text-neutral-500 mt-1">Has confirmed Ghana bookings & saved villas</p>
+                <p className="font-bold text-xs sm:text-sm text-neutral-900 dark:text-white">Kwame Mensah (Buyer / Seeker)</p>
+                <p className="text-[11px] text-neutral-500 mt-0.5">Looking for houses & serviced lands in Ghana</p>
               </button>
 
               <button
                 onClick={() => loginAsDemoUser('host')}
-                className="p-4 rounded-2xl border border-neutral-200 dark:border-[#1E3557] hover:border-[#C5A059] text-left transition-colors bg-neutral-50 dark:bg-[#0A1422]/60"
+                className="p-3.5 rounded-2xl border border-neutral-200 dark:border-[#1E3557] hover:border-[#C5A059] text-left transition-colors bg-neutral-50 dark:bg-[#0A1422]/60"
               >
-                <p className="font-bold text-xs sm:text-sm text-neutral-900 dark:text-white">Akosua Boateng (Superhost)</p>
-                <p className="text-[11px] text-neutral-500 mt-1">Hosts executive penthouses in Accra & Aburi</p>
+                <p className="font-bold text-xs sm:text-sm text-neutral-900 dark:text-white">Akosua Boateng (Property Owner)</p>
+                <p className="text-[11px] text-neutral-500 mt-0.5">Lists properties & manages inquiries</p>
               </button>
             </div>
           </div>
 
-          {/* Theme Settings */}
           <div className="p-5 sm:p-6 rounded-3xl border border-neutral-200 dark:border-[#1E3557] bg-white dark:bg-[#0F1E33] flex items-center justify-between">
             <div>
-              <h4 className="font-bold text-xs sm:text-sm text-neutral-900 dark:text-white">Interface Appearance</h4>
-              <p className="text-xs text-neutral-500 dark:text-neutral-400">Currently active: {isDark ? 'Valpromark Navy Luxury' : 'Daylight Classic'}</p>
+              <h4 className="font-bold text-xs sm:text-sm text-neutral-900 dark:text-white">Appearance Theme</h4>
+              <p className="text-xs text-neutral-500 dark:text-neutral-400">Active: {isDark ? 'Valpromark Navy Luxury' : 'Daylight Classic'}</p>
             </div>
             <button
               onClick={toggleTheme}

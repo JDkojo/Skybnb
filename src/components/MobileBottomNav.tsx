@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Search, Heart, CalendarDays, PlusCircle, User, Compass } from 'lucide-react';
+import { Search, Heart, MessageSquare, PlusCircle, User, Compass } from 'lucide-react';
 import { useAuthStore } from '../store/useAuthStore';
 
 export function MobileBottomNav() {
@@ -64,7 +64,7 @@ export function MobileBottomNav() {
           {({ isActive }) => (
             <>
               <PlusCircle className={`w-5 h-5 ${isActive ? 'stroke-[2.5]' : 'stroke-2'}`} />
-              <span>Host</span>
+              <span>List Free</span>
               {isActive && (
                 <span className="w-1 h-1 rounded-full bg-[#C5A059] -mt-0.5" />
               )}
@@ -73,7 +73,7 @@ export function MobileBottomNav() {
         </NavLink>
 
         <NavLink
-          to="/profile?tab=trips"
+          to="/profile?tab=inquiries"
           className={({ isActive }) =>
             `flex flex-col items-center justify-center min-w-[56px] min-h-[44px] gap-1 text-[11px] font-bold tracking-tight transition-all active:scale-95 ${
               isActive
@@ -84,8 +84,8 @@ export function MobileBottomNav() {
         >
           {({ isActive }) => (
             <>
-              <CalendarDays className={`w-5 h-5 ${isActive ? 'stroke-[2.5]' : 'stroke-2'}`} />
-              <span>Trips</span>
+              <MessageSquare className={`w-5 h-5 ${isActive ? 'stroke-[2.5]' : 'stroke-2'}`} />
+              <span>Inquiries</span>
               {isActive && (
                 <span className="w-1 h-1 rounded-full bg-[#C5A059] -mt-0.5" />
               )}
@@ -106,7 +106,7 @@ export function MobileBottomNav() {
           {({ isActive }) => (
             <>
               <User className={`w-5 h-5 ${isActive ? 'stroke-[2.5]' : 'stroke-2'}`} />
-              <span>{user ? 'Account' : 'Sign in'}</span>
+              <span>{user ? 'Profile' : 'Sign in'}</span>
               {isActive && (
                 <span className="w-1 h-1 rounded-full bg-[#C5A059] -mt-0.5" />
               )}

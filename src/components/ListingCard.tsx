@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Star, ChevronLeft, ChevronRight, ShieldCheck } from 'lucide-react';
+import { Star, ChevronLeft, ChevronRight, MapPin, Phone, MessageSquare, BadgeCheck } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Listing } from '../types';
 import { WishlistButton } from './WishlistButton';
@@ -29,6 +29,34 @@ export function ListingCard({ listing }: ListingCardProps) {
     setCurrentPhotoIdx((prev) => (prev - 1 + photos.length) % photos.length);
   };
 
+  // Helper for Purpose Badge Styling
+  const getPurposeBadge = () => {
+    switch (listing.purpose) {
+      case 'sale':
+        return { label: 'FOR SALE', bg: 'bg-amber-600 text-white' };
+      case 'rent':
+        return { label: 'FOR RENT', bg: 'bg-emerald-600 text-white' };
+      case 'hostel':
+        return { label: 'STUDENT HOSTEL', bg: 'bg-indigo-600 text-white' };
+      case 'short_stay':
+        return { label: 'HOTEL / SHORT STAY', bg: 'bg-sky-600 text-white' };
+      default:
+        if (listing.category === 'land') return { label: 'LAND FOR SALE', bg: 'bg-teal-600 text-white' };
+        return { label: 'FEATURED', bg: 'bg-[#C5A059] text-[#0E1E38]' };
+    }
+  };
+
+  const badge = getPurposeBadge();
+  const displayPrice = listing.price || listing.price_per_night || 0;
+
+  const getPriceCadence = () => {
+    if (listing.price_type === 'total' || listing.purpose === 'sale') return 'Total Price';
+    if (listing.price_type === 'month' || listing.purpose === 'rent') return '/ month';
+    if (listing.price_type === 'year') return '/ year';
+    if (listing.price_type === 'semester' || listing.purpose === 'hostel') return '/ semester';
+    return '/ night';
+  };
+
   return (
     <motion.div
       id={`listing-card-${listing.id}`}
@@ -37,7 +65,7 @@ export function ListingCard({ listing }: ListingCardProps) {
       className="group relative flex flex-col cursor-pointer"
     >
       {/* Image Carousel Container */}
-      <div className="relative aspect-[20/19] w-full overflow-hidden rounded-[14px] sm:rounded-[18px] bg-neutral-100 dark:bg-[#0F1E33] border border-neutral-200/70 dark:border-[#1E3557]/80 shadow-sm group-hover:shadow-md transition-shadow">
+      <div className="relative aspect-[20/18] w-full overflow-hidden rounded-[14px] sm:rounded-[18px] bg-neutral-100 dark:bg-[#0F1E33] border border-neutral-200/70 dark:border-[#1E3557]/80 shadow-sm group-hover:shadow-md transition-shadow">
         <Link to={`/listing/${listing.id}`} className="block w-full h-full">
           <img
             src={photos[currentPhotoIdx]}
@@ -53,13 +81,17 @@ export function ListingCard({ listing }: ListingCardProps) {
           <WishlistButton listingId={listing.id} />
         </div>
 
-        {/* Valpromark Superhost / Guest Favorite badge */}
-        {listing.host_is_superhost && (
-          <div className="absolute top-2 left-2 sm:top-3 sm:left-3 z-10 px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-full text-[8px] sm:text-[10px] font-bold tracking-wider uppercase bg-[#0A1422]/90 text-[#E5C158] backdrop-blur-md shadow-md border border-[#C5A059]/40 flex items-center gap-0.5 sm:gap-1">
-            <ShieldCheck className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#C5A059]" />
-            <span>Luxe</span>
-          </div>
-        )}
+        {/* Purpose Badge on Top Left */}
+        <div className="absolute top-2 left-2 sm:top-3 sm:left-3 z-10 flex flex-col gap-1">
+          <span className={`px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md text-[9px] sm:text-[10px] font-black tracking-wider uppercase shadow-md ${badge.bg}`}>
+            {badge.label}
+          </span>
+          {listing.title_document && (
+            <span className="hidden sm:inline-block px-2 py-0.5 rounded bg-black/70 backdrop-blur-md text-[9px] font-semibold text-neutral-200 shadow-sm">
+              {listing.title_document.split(' ')[0]} Verified
+            </span>
+          )}
+        </div>
 
         {/* Carousel Prev/Next Arrows */}
         {photos.length > 1 && (
@@ -97,31 +129,52 @@ export function ListingCard({ listing }: ListingCardProps) {
       </div>
 
       {/* Info Section */}
-      <Link to={`/listing/${listing.id}`} className="mt-2 sm:mt-3 flex flex-col">
+      <Link to={`/listing/${listing.id}`} className="mt-2.5 sm:mt-3 flex flex-col">
         <div className="flex items-center justify-between gap-1 sm:gap-2">
-          <h3 className="font-bold text-xs sm:text-[15px] text-neutral-900 dark:text-neutral-100 truncate">
-            {listing.location}
+          <h3 className="font-bold text-xs sm:text-[15px] text-neutral-900 dark:text-neutral-100 truncate flex items-center gap-1">
+            <MapPin className="w-3.5 h-3.5 text-[#C5A059] shrink-0" />
+            <span className="truncate">{listing.location}</span>
           </h3>
-          <div className="flex items-center gap-0.5 sm:gap-1 text-[11px] sm:text-[13px] font-bold text-neutral-900 dark:text-[#E5C158] shrink-0">
-            <Star className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-[#C5A059] text-[#C5A059]" />
-            <span>{listing.rating.toFixed(1)}</span>
-            <span className="text-neutral-400 text-[10px] sm:text-xs font-normal hidden xs:inline">({listing.review_count})</span>
-          </div>
+          {listing.contact_name && (
+            <span className="inline-flex items-center gap-0.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400 shrink-0 bg-emerald-50 dark:bg-emerald-950/40 px-1.5 py-0.5 rounded">
+              <BadgeCheck className="w-3 h-3" /> Direct
+            </span>
+          )}
         </div>
 
-        <p className="text-[11px] sm:text-sm text-neutral-500 dark:text-neutral-400 truncate mt-0.5 font-normal">
+        <p className="text-[11px] sm:text-sm text-neutral-700 dark:text-neutral-300 font-semibold truncate mt-1">
           {listing.title}
         </p>
 
-        <p className="text-[10px] sm:text-xs text-neutral-400 dark:text-neutral-400 mt-0.5 truncate">
-          {listing.bedrooms} bed{listing.bedrooms > 1 ? 's' : ''} · {listing.type}
-        </p>
+        {/* Specs Line: Bedrooms or Land Size */}
+        <div className="text-[10px] sm:text-xs text-neutral-500 dark:text-neutral-400 mt-0.5 truncate flex items-center gap-1.5">
+          {listing.category === 'land' ? (
+            <span>📐 {listing.land_size || 'Demarcated Plot'}</span>
+          ) : listing.bedrooms > 0 ? (
+            <span>🛏️ {listing.bedrooms} bed{listing.bedrooms > 1 ? 's' : ''} · 🚿 {listing.bathrooms} bath{listing.bathrooms > 1 ? 's' : ''}</span>
+          ) : (
+            <span>🏢 {listing.type}</span>
+          )}
+          <span>·</span>
+          <span className="truncate text-neutral-400">{listing.type}</span>
+        </div>
 
-        <div className="mt-1 sm:mt-1.5 flex items-baseline gap-1">
-          <span className="font-black text-xs sm:text-[15px] text-neutral-900 dark:text-white">
-            GH₵ {listing.price_per_night.toLocaleString()}
-          </span>
-          <span className="text-neutral-500 dark:text-neutral-400 text-[10px] sm:text-xs font-medium">/ night</span>
+        {/* Price & Cadence */}
+        <div className="mt-1.5 flex items-baseline justify-between gap-2">
+          <div className="flex items-baseline gap-1">
+            <span className="font-black text-xs sm:text-[15px] text-[#0E1E38] dark:text-[#E5C158]">
+              GH₵ {displayPrice.toLocaleString()}
+            </span>
+            <span className="text-neutral-500 dark:text-neutral-400 text-[10px] sm:text-xs font-medium">
+              {getPriceCadence()}
+            </span>
+          </div>
+
+          {listing.is_negotiable && (
+            <span className="text-[9px] sm:text-[10px] font-bold text-neutral-500 dark:text-neutral-400 uppercase tracking-tight">
+              Negotiable
+            </span>
+          )}
         </div>
       </Link>
     </motion.div>

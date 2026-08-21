@@ -12,9 +12,7 @@ interface SearchState {
 
 const defaultFilters: SearchFilters = {
   location: '',
-  checkIn: '',
-  checkOut: '',
-  guests: 1,
+  purpose: 'all',
   category: 'all',
   propertyType: '',
   minPrice: undefined,
@@ -22,6 +20,9 @@ const defaultFilters: SearchFilters = {
   amenities: [],
   bedrooms: undefined,
   bathrooms: undefined,
+  guests: 1,
+  checkIn: '',
+  checkOut: '',
 };
 
 export const useSearchStore = create<SearchState>((set) => ({

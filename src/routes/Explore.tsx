@@ -15,10 +15,11 @@ export default function Explore() {
 
   const activeFiltersCount = [
     Boolean(filters.location),
-    Boolean(filters.checkIn),
-    filters.guests > 1,
+    Boolean(filters.purpose && filters.purpose !== 'all'),
+    Boolean(filters.category && filters.category !== 'all'),
     filters.minPrice !== undefined || filters.maxPrice !== undefined,
     Boolean(filters.propertyType),
+    (filters.bedrooms && filters.bedrooms > 0) || (filters.bathrooms && filters.bathrooms > 0),
     filters.amenities.length > 0,
   ].filter(Boolean).length;
 
@@ -56,7 +57,7 @@ export default function Explore() {
             <div className="flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-[#C5A059]" />
               <span>
-                Found <strong>{listings.length}</strong> Ghana stays matching your search filters
+                Found <strong>{listings.length}</strong> Ghana properties matching your search
               </span>
             </div>
           </div>

@@ -20,7 +20,6 @@ import { ProtectedRoute } from './components/ProtectedRoute';
 // Routes
 import Explore from './routes/Explore';
 import ListingDetail from './routes/listing/ListingDetail';
-import BookingConfirm from './routes/booking/BookingConfirm';
 import Wishlists from './routes/Wishlists';
 import CreateListing from './routes/host/CreateListing';
 import MyListings from './routes/host/MyListings';
@@ -49,14 +48,6 @@ export default function App() {
             <Routes>
               <Route path="/" element={<Explore />} />
               <Route path="/listing/:id" element={<ListingDetail />} />
-              <Route
-                path="/booking/:id"
-                element={
-                  <ProtectedRoute>
-                    <BookingConfirm />
-                  </ProtectedRoute>
-                }
-              />
               <Route path="/wishlists" element={<Wishlists />} />
               <Route
                 path="/host/create"
