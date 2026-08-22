@@ -24,6 +24,8 @@ import Wishlists from './routes/Wishlists';
 import CreateListing from './routes/host/CreateListing';
 import MyListings from './routes/host/MyListings';
 import Profile from './routes/Profile';
+import Services from './routes/Services';
+import ServicesAdmin from './routes/ServicesAdmin';
 import SignIn from './routes/auth/SignIn';
 import SignUp from './routes/auth/SignUp';
 
@@ -49,6 +51,9 @@ export default function App() {
               <Route path="/" element={<Explore />} />
               <Route path="/listing/:id" element={<ListingDetail />} />
               <Route path="/wishlists" element={<Wishlists />} />
+              <Route path="/services" element={<Services />} />
+              <Route path="/services/admin" element={<ServicesAdmin />} />
+              <Route path="/admin/services" element={<ServicesAdmin />} />
               <Route
                 path="/host/create"
                 element={

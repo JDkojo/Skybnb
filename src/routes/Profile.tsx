@@ -19,6 +19,9 @@ import {
   FileCheck,
   Compass,
   Check,
+  LayoutDashboard,
+  Briefcase,
+  ArrowRight,
 } from 'lucide-react';
 import { useAuthStore } from '../store/useAuthStore';
 import { useAppStore } from '../store/useAppStore';
@@ -115,6 +118,13 @@ export default function Profile() {
 
           <div className="flex flex-wrap items-center gap-2.5">
             <Link
+              to="/services/admin"
+              className="px-4 py-2 rounded-full font-bold text-xs bg-[#0A1422] text-[#C5A059] border border-[#1E3557] hover:bg-[#0E1E38] transition-colors flex items-center gap-1.5"
+            >
+              <LayoutDashboard className="w-3.5 h-3.5 text-[#C5A059]" />
+              <span>Services Admin</span>
+            </Link>
+            <Link
               to="/host/create"
               className="px-4 py-2 rounded-full font-bold text-xs bg-gradient-to-r from-[#DFB24A] via-[#C5A059] to-[#DFB24A] text-[#0E1E38] hover:scale-105 transition-transform shadow-sm flex items-center gap-1.5"
             >
@@ -156,6 +166,18 @@ export default function Profile() {
         >
           <MessageSquare className="w-4 h-4" />
           <span>Inquiries & Tours ({inquiries.length})</span>
+        </button>
+
+        <button
+          onClick={() => setTab('services')}
+          className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-colors whitespace-nowrap ${
+            activeTab === 'services'
+              ? 'bg-[#C5A059] text-[#0E1E38]'
+              : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white'
+          }`}
+        >
+          <Briefcase className="w-4 h-4" />
+          <span>Management & Services</span>
         </button>
 
         <button
@@ -357,6 +379,92 @@ export default function Profile() {
               ))}
             </div>
           )}
+        </div>
+      )}
+
+      {/* TAB: Management & Services */}
+      {activeTab === 'services' && (
+        <div className="space-y-6">
+          <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-[#0E1E38] via-[#0A1424] to-[#070D18] text-white border border-[#1E3557] space-y-6 shadow-md">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase bg-[#C5A059]/20 text-[#E5C158] border border-[#C5A059]/30">
+                  Valpromark Advisory & Management
+                </span>
+                <h2 className="text-xl sm:text-2xl font-black text-white mt-2">
+                  Property & Facility Management Hub
+                </h2>
+                <p className="text-xs sm:text-sm text-neutral-300 max-w-xl mt-1">
+                  Dedicated operations for landlords, student hostels, commercial buildings, and diaspora property investors across Ghana.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <Link
+                  to="/services/admin"
+                  className="px-5 py-2.5 rounded-2xl bg-[#C5A059] hover:bg-[#d6b063] text-[#0E1E38] font-black text-xs sm:text-sm flex items-center gap-2 shadow-lg shadow-[#C5A059]/20 transition-all"
+                >
+                  <LayoutDashboard className="w-4 h-4" />
+                  <span>Open Services Admin Dashboard</span>
+                </Link>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2 border-t border-[#1E3557]">
+              <div className="p-4 rounded-2xl bg-[#0F1E33]/90 border border-[#1E3557]/80 space-y-1">
+                <p className="text-xs font-bold text-[#E5C158]">Full Property Management</p>
+                <p className="text-xs text-neutral-300">
+                  Tenant vetting, monthly rent remittance, and maintenance care at 8–10% commission.
+                </p>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-[#0F1E33]/90 border border-[#1E3557]/80 space-y-1">
+                <p className="text-xs font-bold text-[#E5C158]">Lands Title Search</p>
+                <p className="text-xs text-neutral-300">
+                  Official search at Lands Commission PVLMD, LRD, and cadastral survey validation.
+                </p>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-[#0F1E33]/90 border border-[#1E3557]/80 space-y-1">
+                <p className="text-xs font-bold text-[#E5C158]">24/7 Facility Maintenance</p>
+                <p className="text-xs text-neutral-300">
+                  Certified Ghanaian artisans for plumbing, borehole pumps, and generator care.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-6 rounded-3xl border border-neutral-200 dark:border-[#1E3557] bg-white dark:bg-[#0F1E33] space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="text-sm font-bold text-neutral-900 dark:text-white">
+                Request a New Management Consultation
+              </h3>
+              <Link
+                to="/services"
+                className="text-xs font-bold text-[#C5A059] hover:underline flex items-center gap-1"
+              >
+                <span>View All Services</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+            <p className="text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed">
+              Whether you are an owner in Ghana or living abroad in the UK, USA, or Canada, our local team ensures your property is leased to vetted tenants, rents are remitted on time, and your title documents are 100% verified.
+            </p>
+            <div className="flex flex-wrap gap-3 pt-2">
+              <Link
+                to="/services#request-form"
+                className="px-4 py-2 rounded-xl bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 text-xs font-bold"
+              >
+                Submit Service Request
+              </Link>
+              <Link
+                to="/services/admin"
+                className="px-4 py-2 rounded-xl border border-neutral-300 dark:border-[#1E3557] text-neutral-700 dark:text-neutral-300 text-xs font-bold hover:text-[#C5A059]"
+              >
+                View Management Portfolio & Tickets
+              </Link>
+            </div>
+          </div>
         </div>
       )}
 

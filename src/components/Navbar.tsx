@@ -14,6 +14,8 @@ import {
   Building2,
   Search,
   MessageSquare,
+  Briefcase,
+  LayoutDashboard,
 } from 'lucide-react';
 import { ValpromarkLogo } from './ValpromarkLogo';
 import { SearchBar } from './SearchBar';
@@ -85,10 +87,19 @@ export function Navbar() {
             <Search className="w-4 h-4 text-[#C5A059] stroke-[2.5]" />
           </button>
 
+          {/* Services Menu Tab */}
+          <Link
+            to="/services"
+            className="hidden md:inline-flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-bold text-neutral-800 dark:text-neutral-200 hover:text-[#C5A059] dark:hover:text-[#E5C158] hover:bg-[#C5A059]/10 transition-colors"
+          >
+            <Briefcase className="w-3.5 h-3.5 text-[#C5A059]" />
+            <span>Services</span>
+          </Link>
+
           {/* List Property Link */}
           <Link
             to="/host/create"
-            className="hidden md:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-bold text-neutral-800 dark:text-[#E5C158] hover:bg-[#C5A059]/10 transition-colors border border-transparent hover:border-[#C5A059]/30"
+            className="hidden lg:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-bold text-neutral-800 dark:text-[#E5C158] hover:bg-[#C5A059]/10 transition-colors border border-transparent hover:border-[#C5A059]/30"
           >
             <PlusCircle className="w-4 h-4 text-[#C5A059]" />
             <span>List Property Free</span>
@@ -142,15 +153,38 @@ export function Navbar() {
             {/* Dropdown Box */}
             {menuOpen && (
               <div className="absolute right-0 mt-2 w-64 rounded-2xl bg-white dark:bg-[#0F1E33] shadow-2xl border border-neutral-200 dark:border-[#1E3557] py-2 z-50 text-sm animate-in fade-in slide-in-from-top-2 duration-150">
+                {/* Services Section in Dropdown */}
+                <div className="px-3 py-1.5 mb-1 bg-neutral-50 dark:bg-[#0A1422] border-b border-neutral-100 dark:border-[#1E3557]/80">
+                  <p className="text-[10px] font-black uppercase text-[#C5A059] tracking-wider px-1">
+                    Valpromark Services
+                  </p>
+                  <Link
+                    to="/services"
+                    onClick={() => setMenuOpen(false)}
+                    className="flex items-center gap-2 px-1 py-1.5 text-xs font-bold text-neutral-800 dark:text-neutral-200 hover:text-[#C5A059] transition-colors"
+                  >
+                    <Briefcase className="w-3.5 h-3.5 text-[#C5A059]" />
+                    <span>Property Management Services</span>
+                  </Link>
+                  <Link
+                    to="/services/admin"
+                    onClick={() => setMenuOpen(false)}
+                    className="flex items-center gap-2 px-1 py-1.5 text-xs font-bold text-neutral-800 dark:text-neutral-200 hover:text-[#C5A059] transition-colors"
+                  >
+                    <LayoutDashboard className="w-3.5 h-3.5 text-[#C5A059]" />
+                    <span>Services Admin Dashboard</span>
+                  </Link>
+                </div>
+
                 {user ? (
                   <>
-                    <div className="px-4 py-2.5 border-b border-neutral-100 dark:border-[#1E3557]/80">
+                    <div className="px-4 py-2 border-b border-neutral-100 dark:border-[#1E3557]/80">
                       <p className="font-bold text-neutral-900 dark:text-white truncate">
                         {user.full_name}
                       </p>
                       <p className="text-xs text-neutral-500 dark:text-neutral-400 truncate">{user.email}</p>
                       {user.is_host && (
-                        <span className="inline-flex items-center gap-1 mt-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase bg-[#C5A059]/15 text-[#C5A059] border border-[#C5A059]/30">
+                        <span className="inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase bg-[#C5A059]/15 text-[#C5A059] border border-[#C5A059]/30">
                           <ShieldCheck className="w-3 h-3" /> Essence Superhost
                         </span>
                       )}
@@ -159,7 +193,7 @@ export function Navbar() {
                     <Link
                       to="/wishlists"
                       onClick={() => setMenuOpen(false)}
-                      className="flex items-center gap-2.5 px-4 py-2.5 text-neutral-700 dark:text-neutral-200 hover:bg-[#C5A059]/10 hover:text-[#C5A059] transition-colors"
+                      className="flex items-center gap-2.5 px-4 py-2 text-neutral-700 dark:text-neutral-200 hover:bg-[#C5A059]/10 hover:text-[#C5A059] transition-colors"
                     >
                       <Heart className="w-4 h-4 text-[#C5A059]" />
                       <span>Saved Properties</span>
@@ -168,7 +202,7 @@ export function Navbar() {
                     <Link
                       to="/profile?tab=inquiries"
                       onClick={() => setMenuOpen(false)}
-                      className="flex items-center gap-2.5 px-4 py-2.5 text-neutral-700 dark:text-neutral-200 hover:bg-[#C5A059]/10 hover:text-[#C5A059] transition-colors"
+                      className="flex items-center gap-2.5 px-4 py-2 text-neutral-700 dark:text-neutral-200 hover:bg-[#C5A059]/10 hover:text-[#C5A059] transition-colors"
                     >
                       <MessageSquare className="w-4 h-4 text-[#C5A059]" />
                       <span>Inquiries & Site Tours</span>
@@ -177,7 +211,7 @@ export function Navbar() {
                     <Link
                       to="/host/my-listings"
                       onClick={() => setMenuOpen(false)}
-                      className="flex items-center gap-2.5 px-4 py-2.5 text-neutral-700 dark:text-neutral-200 hover:bg-[#C5A059]/10 hover:text-[#C5A059] transition-colors"
+                      className="flex items-center gap-2.5 px-4 py-2 text-neutral-700 dark:text-neutral-200 hover:bg-[#C5A059]/10 hover:text-[#C5A059] transition-colors"
                     >
                       <Building2 className="w-4 h-4 text-[#C5A059]" />
                       <span>Owner Dashboard</span>
@@ -186,7 +220,7 @@ export function Navbar() {
                     <Link
                       to="/host/create"
                       onClick={() => setMenuOpen(false)}
-                      className="flex items-center gap-2.5 px-4 py-2.5 text-neutral-700 dark:text-neutral-200 hover:bg-[#C5A059]/10 hover:text-[#C5A059] transition-colors"
+                      className="flex items-center gap-2.5 px-4 py-2 text-neutral-700 dark:text-neutral-200 hover:bg-[#C5A059]/10 hover:text-[#C5A059] transition-colors"
                     >
                       <PlusCircle className="w-4 h-4 text-[#C5A059]" />
                       <span>List Property for Free</span>
@@ -195,7 +229,7 @@ export function Navbar() {
                     <Link
                       to="/profile"
                       onClick={() => setMenuOpen(false)}
-                      className="flex items-center gap-2.5 px-4 py-2.5 text-neutral-700 dark:text-neutral-200 hover:bg-[#C5A059]/10 hover:text-[#C5A059] transition-colors"
+                      className="flex items-center gap-2.5 px-4 py-2 text-neutral-700 dark:text-neutral-200 hover:bg-[#C5A059]/10 hover:text-[#C5A059] transition-colors"
                     >
                       <UserIcon className="w-4 h-4 text-[#C5A059]" />
                       <span>Account Profile</span>
@@ -209,7 +243,7 @@ export function Navbar() {
                         setMenuOpen(false);
                         navigate('/');
                       }}
-                      className="w-full text-left flex items-center gap-2.5 px-4 py-2.5 text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors"
+                      className="w-full text-left flex items-center gap-2.5 px-4 py-2 text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors"
                     >
                       <LogOut className="w-4 h-4" />
                       <span>Sign out</span>
@@ -222,7 +256,7 @@ export function Navbar() {
                         setAuthModal(true, 'signin');
                         setMenuOpen(false);
                       }}
-                      className="w-full text-left px-4 py-2.5 font-bold text-neutral-900 dark:text-[#E5C158] hover:bg-[#C5A059]/10 transition-colors"
+                      className="w-full text-left px-4 py-2 font-bold text-neutral-900 dark:text-[#E5C158] hover:bg-[#C5A059]/10 transition-colors"
                     >
                       Sign in
                     </button>
@@ -231,7 +265,7 @@ export function Navbar() {
                         setAuthModal(true, 'signup');
                         setMenuOpen(false);
                       }}
-                      className="w-full text-left px-4 py-2.5 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+                      className="w-full text-left px-4 py-2 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
                     >
                       Sign up
                     </button>
@@ -239,7 +273,7 @@ export function Navbar() {
                     <Link
                       to="/host/create"
                       onClick={() => setMenuOpen(false)}
-                      className="block px-4 py-2.5 text-neutral-700 dark:text-neutral-300 hover:bg-[#C5A059]/10 hover:text-[#C5A059] transition-colors"
+                      className="block px-4 py-2 text-neutral-700 dark:text-neutral-300 hover:bg-[#C5A059]/10 hover:text-[#C5A059] transition-colors"
                     >
                       List your property for free
                     </Link>
